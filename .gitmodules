@@ -1,0 +1,3 @@
+[submodule "headers/lib/libft"]
+	path = headers/lib/libft
+	url = git@github.com:ShadowAt42School/libft.git
