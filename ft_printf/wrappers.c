@@ -6,29 +6,30 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 18:40:53 by maghayev          #+#    #+#             */
-/*   Updated: 2019/09/25 22:16:01 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/09/29 20:29:28 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_stdio.h"
 
-t_item	*setup(const char *format)
+t_result	*setup(const char *format)
 {
-	t_item	*item;
+	t_result	*result;
 
-	item = ft_memalloc(sizeof(t_item));
-	item->format = format;
-	item->lenght_format = ft_strlen(format);
-	return (item);
+	result = ft_memalloc(sizeof(t_result));
+	result->format = format;
+	result->lenght_format = ft_strlen(format);
+	return (result);
 }
 
-int		ft_printf(const char *format, ...)
+int			ft_printf(const char *format, ...)
 {
 	va_list		ap;
-	t_item		*item;
+	t_result	*result;
 
-	item = setup(format);
+	result = setup(format);
 	va_start(ap, format);
+	ft_engine(&ap, result);
 	va_end(ap);
-	return (item->length_print);
+	return (result->length_print);
 }

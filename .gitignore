@@ -1,0 +1,5 @@
+libftprintf.a
+main.c
+**.*.gch
+a.out.dSYM/
+a.out
