@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/01 23:53:51 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/02 22:23:07 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct		s_string_decoration
 	t_bool					is_capital;
 	t_bool					is_force_decimal;
 	t_bool					is_pad_zeros;
+	t_bool					is_precision;
 }					t_string_decoration;
 
 typedef struct		s_formater

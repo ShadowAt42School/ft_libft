@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/01 23:52:12 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/02 22:38:13 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,30 @@ void	parse_width_precision(
 	va_list *ap
 )
 {
-	int		length;
-	char	is_variable;
-	char	is_precision;
+	int				length;
+	char			is_variable;
+	static t_bool	call_times;
 
 	is_variable = FALSE;
-	is_precision = FALSE;
+	if (call_times == 2)
+		call_times = 0;
 	length = 0;
-	if (**format == '.')
-	{
+	if (**format == '.' && call_times == 1 &&
+									(formater->decorators.is_precision = TRUE))
 		(*format)++;
-		is_precision = TRUE;
-	}
 	if (**format == '*')
 	{
 		(*format)++;
 		length = va_arg(*ap, unsigned int);
 		is_variable = TRUE;
 	}
-	if (is_precision)
+	if (formater->decorators.is_precision && call_times == 1)
 		formater->precision = is_variable ? length : ft_atoi(*format);
-	else
+	if (call_times == 0 && !formater->decorators.is_precision)
 		formater->width = is_variable ? length : ft_atoi(*format);
 	if (!is_variable)
 		ft_strnumlen_inplace(format);
+	call_times++;
 }
 
 void	parse_length(const char **format, t_formater *formater)

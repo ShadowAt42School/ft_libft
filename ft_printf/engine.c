@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/01 23:57:31 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/02 21:23:23 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,7 @@ void	ft_engine(va_list *ap, t_result *result)
 			ft_lstadd(&pieces, parse_format(ap, &result->format));
 			continue;
 		}
-		clean_str = ft_strdupdelim(result->format, '%');
-		clean_str_len = ft_strlen(clean_str);
+		clean_str_len = ft_strdelim(&clean_str, result->format, '%');
 		ft_lstadd(&pieces, ft_lstnew(clean_str, clean_str_len));
 		result->format += clean_str_len;
 	}
