@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/02 22:38:13 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/03 22:50:10 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	build_decorators(t_formater *formater)
 		formater->decorators.is_preceed_ox = TRUE;
 		formater->decorators.is_force_decimal = TRUE;
 	}
-	if (ISFLAGZERO(formater->flags))
+	if (ISFLAGZERO(formater->flags) ||
+		(INT_SPEC(formater->specifier) && formater->decorators.is_precision))
 		formater->decorators.is_pad_zeros = TRUE;
 }

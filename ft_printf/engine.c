@@ -6,11 +6,12 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/02 21:23:23 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/03 23:02:57 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_stdio.h"
+#include <stdio.h>
 
 void	ft_engine(va_list *ap, t_result *result)
 {
@@ -49,11 +50,12 @@ t_list	*parse_format(va_list *ap, const char **format_origin)
 
 t_list	*build_format(t_formater *formater)
 {
-	char	*result;
-	int		length;
+	char			*result;
+	unsigned int	total_length;
 
-	length = formater->width;
-
-	result = ft_strnew(length);
-	return (ft_lstnew(result, length));
+	total_length = formater->width;
+	length_length(&total_length, formater);
+	flags_length(&total_length, formater);
+	result = ft_strnew(total_length);
+	return (ft_lstnew(result, total_length));
 }

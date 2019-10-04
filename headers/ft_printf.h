@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/02 22:23:07 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/03 22:53:43 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@
 # define ISFLAGHS(x) 	(x & 8 ? TRUE : FALSE)
 # define ISFLAGZERO(x) 	(x & 16 ? TRUE : FALSE)
 
-# define SIGNPOSSIBLE(x) (x == 'd'|| x == 'i' || x == 'c' ? TRUE : FALSE)
-
 /*
 **	Length
 */
@@ -46,13 +44,25 @@
 # define Z 	6
 # define T 	7
 # define LF	8
-
 # define ISLENGTH(x)	(x == 'h' || x == 'l' || x == 'j' || ISLENGTH1(x))
 # define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L')
 
+# define LEN_O	1
+# define LEN_X	2
+# define LEN_CX	3
+# define STR_O	"0"
+# define STR_X	"0x"
+# define STR_CX	"0X"
+
+/*
+**	Different Types of specifiers and theit possible meta
+*/
 # define ISFLOAT(x)		(x == 'f' || x == 'F' || x == 'e' || ISFLOAT1(x))
 # define ISFLOAT1(x)	(x == 'E' || x == 'g' || x == 'G' || ISFLOAT2(x))
 # define ISFLOAT2(x)	(x == 'a' || x == 'A')
+# define SIGNPOSSIBLE(x)(x == 'd'|| x == 'i' || x == 'c' ? TRUE : FALSE)
+# define INT_SPEC(x) 	(x == 'd'|| x == 'i' || x == 'u' || INT_SPEC1(x))
+# define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' ? TRUE : FALSE)
 
 /*
 **	Varg
@@ -78,6 +88,7 @@ union				u_argument {
 	intmax_t				intmax;
 	uintmax_t				uintmax;
 	void					*pspec;
+	ptrdiff_t				ptrdiff;
 };
 
 /*
@@ -93,6 +104,7 @@ typedef struct		s_string_decoration
 	t_bool					is_force_decimal;
 	t_bool					is_pad_zeros;
 	t_bool					is_precision;
+
 }					t_string_decoration;
 
 typedef struct		s_formater
@@ -102,6 +114,7 @@ typedef struct		s_formater
 	unsigned int			precision;
 	unsigned short int		length;
 	unsigned char			specifier;
+	unsigned int			value_length;
 	t_string_decoration		decorators;
 	union u_argument		value;
 }					t_formater;
@@ -138,5 +151,13 @@ void				parse_length(const char **format, t_formater *formater);
 void				parse_specifier(
 						const char **format, t_formater *formater, va_list *ap);
 void				build_decorators(t_formater *formater);
+
+/*
+**	Format Result Length
+*/
+unsigned int		numspecifier_length(t_formater *fmt, t_bool is_u);
+void				length_length(
+								unsigned int *current_length, t_formater *form);
+void				flags_length(unsigned int *current_length, t_formater *fmt);
 
 #endif
