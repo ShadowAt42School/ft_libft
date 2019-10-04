@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/03 22:50:10 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/03 23:31:02 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,9 @@ void	build_decorators(t_formater *formater)
 		formater->decorators.is_capital = TRUE;
 		formater->specifier = ft_tolower(formater->specifier);
 	}
-	if (SIGNPOSSIBLE(formater->specifier) && ISFLAGSP(formater->flags))
+	if (SIGNPOSSIBLE(formater->specifier) &&
+					(ISFLAGSP(formater->flags) ||
+					(formater->value.intd < 0 || formater->value.llint < 0)))
 		formater->decorators.is_force_sign = TRUE;
 	if (ISFLAGSM(formater->flags))
 		formater->decorators.is_left_justify = TRUE;
