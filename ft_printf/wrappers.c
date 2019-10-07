@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 18:40:53 by maghayev          #+#    #+#             */
-/*   Updated: 2019/09/29 22:30:14 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/06 23:09:24 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,6 @@ int			ft_printf(const char *format, ...)
 	va_start(ap, format);
 	ft_engine(&ap, result);
 	va_end(ap);
+	write(1, result->print, result->length_print);
 	return (result->length_print);
 }

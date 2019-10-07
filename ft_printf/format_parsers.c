@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/03 23:31:02 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/06 22:44:36 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	parse_specifier(
 	formater->specifier = **format;
 	if (ISFLOAT(**format))
 	{
-		if (formater->length == 8)
+		if (formater->length == LF)
 			formater->value.ldnumber = va_arg(*ap, long double);
 		else
 			formater->value.dnumber = va_arg(*ap, double);
@@ -126,4 +126,6 @@ void	build_decorators(t_formater *formater)
 	if (ISFLAGZERO(formater->flags) ||
 		(INT_SPEC(formater->specifier) && formater->decorators.is_precision))
 		formater->decorators.is_pad_zeros = TRUE;
+	if (formater->specifier == 'p' && (formater->length = 4))
+		formater->decorators.is_preceed_ox = TRUE;
 }

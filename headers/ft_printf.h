@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/03 22:53:43 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/06 23:29:56 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,11 @@
 # define LF	8
 # define ISLENGTH(x)	(x == 'h' || x == 'l' || x == 'j' || ISLENGTH1(x))
 # define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L')
+# define DSTR_MAX 50
 
-# define LEN_O	1
-# define LEN_X	2
-# define LEN_CX	3
-# define STR_O	"0"
-# define STR_X	"0x"
-# define STR_CX	"0X"
+# define LEN_OX(x)	(x == 'o' ? 1 : 2)
+# define STR_OX(x)	(x == 'o' ? "0" : STR_XXP(x))
+# define STR_XXP(x)	(x == 'x' || x == 'p' ? "0x" : "0X")
 
 /*
 **	Different Types of specifiers and theit possible meta
@@ -62,7 +60,10 @@
 # define ISFLOAT2(x)	(x == 'a' || x == 'A')
 # define SIGNPOSSIBLE(x)(x == 'd'|| x == 'i' || x == 'c' ? TRUE : FALSE)
 # define INT_SPEC(x) 	(x == 'd'|| x == 'i' || x == 'u' || INT_SPEC1(x))
-# define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' ? TRUE : FALSE)
+# define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' || INT_SPEC2(x))
+# define INT_SPEC2(x) 	(x == 'p' ? TRUE : FALSE)
+# define BASE(x) 		(SIGNPOSSIBLE(x) ? 10 : IS_BASE_OCT(x))
+# define IS_BASE_OCT(x) 		(x == 'o' ? 8 : 16)
 
 /*
 **	Varg
@@ -100,12 +101,19 @@ typedef struct		s_string_decoration
 	t_bool					is_force_sign;
 	t_bool					is_blank_space;
 	t_bool					is_preceed_ox;
-	t_bool					is_capital;
 	t_bool					is_force_decimal;
+	t_bool					is_capital;
 	t_bool					is_pad_zeros;
 	t_bool					is_precision;
 
 }					t_string_decoration;
+
+typedef struct		s_integer_values
+{
+	long long int			llin;
+	unsigned long long int	ullin;
+	char					buffer[DSTR_MAX];
+}					t_integer_values;
 
 typedef struct		s_formater
 {
@@ -114,8 +122,11 @@ typedef struct		s_formater
 	unsigned int			precision;
 	unsigned short int		length;
 	unsigned char			specifier;
+	unsigned int			aux_length;
 	unsigned int			value_length;
+	unsigned int			processed_length;
 	t_string_decoration		decorators;
+	t_integer_values		integer_values;
 	union u_argument		value;
 }					t_formater;
 
@@ -139,6 +150,7 @@ int					ft_printf(const char *format, ...);
 void				ft_engine(va_list *ap, t_result *result);
 t_list				*parse_format(va_list *ap, const char **format_origin);
 t_list				*build_format(t_formater *formater);
+void				finalize(t_result *result, t_list *pieces);
 
 /*
 **	Format Parsers
@@ -155,9 +167,18 @@ void				build_decorators(t_formater *formater);
 /*
 **	Format Result Length
 */
-unsigned int		numspecifier_length(t_formater *fmt, t_bool is_u);
 void				length_length(
 								unsigned int *current_length, t_formater *form);
 void				flags_length(unsigned int *current_length, t_formater *fmt);
+
+/*
+**	Format String Builders
+*/
+void				build_flags(
+						char **res, t_formater *fmt, unsigned int str_start);
+void				build_precision(
+						char **res, t_formater *fmt, unsigned int str_start);
+void				build_specifier(
+						char **res, t_formater *fmt, unsigned int str_start);
 
 #endif
