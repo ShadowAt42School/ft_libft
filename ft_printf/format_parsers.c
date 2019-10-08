@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/06 22:44:36 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/08 01:26:24 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,31 +101,31 @@ void	parse_specifier(
 	(*format)++;
 }
 
-void	build_decorators(t_formater *formater)
+void	build_decorators(t_formater *fmt)
 {
-	if (IS_UPPER(formater->specifier))
+	if (IS_UPPER(fmt->specifier))
 	{
-		if (formater->length == NO && formater->length != LF)
-			formater->length = L;
-		formater->decorators.is_capital = TRUE;
-		formater->specifier = ft_tolower(formater->specifier);
+		if (fmt->length == NO && fmt->length != LF && DOUL(fmt->specifier))
+			fmt->length = L;
+		fmt->decorators.is_capital = TRUE;
+		fmt->specifier = ft_tolower(fmt->specifier);
 	}
-	if (SIGNPOSSIBLE(formater->specifier) &&
-					(ISFLAGSP(formater->flags) ||
-					(formater->value.intd < 0 || formater->value.llint < 0)))
-		formater->decorators.is_force_sign = TRUE;
-	if (ISFLAGSM(formater->flags))
-		formater->decorators.is_left_justify = TRUE;
-	if (SIGNPOSSIBLE(formater->specifier) && ISFLAGSPC(formater->flags))
-		formater->decorators.is_blank_space = TRUE;
-	if (ISFLAGHS(formater->flags))
+	if (BASE10(fmt->specifier) &&
+					(ISFLAGSP(fmt->flags)))
+		fmt->decorators.is_force_sign = TRUE;
+	if (ISFLAGSM(fmt->flags))
+		fmt->decorators.is_left_justify = TRUE;
+	if (BASE10(fmt->specifier) && ISFLAGSPC(fmt->flags))
+		fmt->decorators.is_blank_space = TRUE;
+	if (ISFLAGHS(fmt->flags) && (ISFLOAT(fmt->specifier) ||
+												UOCTHEX(fmt->specifier)))
 	{
-		formater->decorators.is_preceed_ox = TRUE;
-		formater->decorators.is_force_decimal = TRUE;
+		fmt->decorators.is_preceed_ox = TRUE;
+		fmt->decorators.is_force_decimal = TRUE;
 	}
-	if (ISFLAGZERO(formater->flags) ||
-		(INT_SPEC(formater->specifier) && formater->decorators.is_precision))
-		formater->decorators.is_pad_zeros = TRUE;
-	if (formater->specifier == 'p' && (formater->length = 4))
-		formater->decorators.is_preceed_ox = TRUE;
+	if (ISFLAGZERO(fmt->flags) ||
+		(INT_SPEC(fmt->specifier) && fmt->decorators.is_precision))
+		fmt->decorators.is_pad_zeros = TRUE;
+	if (fmt->specifier == 'p' && (fmt->length = 4))
+		fmt->decorators.is_preceed_ox = TRUE;
 }

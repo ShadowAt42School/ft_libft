@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/06 23:39:05 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/08 01:52:15 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,26 +49,28 @@ t_list	*parse_format(va_list *ap, const char **format_origin)
 	return (build_format(&formatter));
 }
 
-t_list	*build_format(t_formater *formater)
+t_list	*build_format(t_formater *fmt)
 {
 	char			*result;
 	unsigned int	total_length;
-	unsigned int	str_start;
 
-	total_length = formater->width;
-	length_length(&total_length, formater);
-	flags_length(&total_length, formater);
+	total_length = fmt->width;
+	length_length(&total_length, fmt);
+	flags_length(&total_length, fmt);
 	result = ft_strnew(total_length);
-	if (formater->width > 0)
+	if (fmt->width > 0)
 		ft_memset(result,
-			formater->decorators.is_pad_zeros &&
-								!formater->decorators.is_precision ? '0' : ' ',
+			fmt->decorators.is_pad_zeros &&
+			!fmt->decorators.is_precision ? '0' : ' ',
 			total_length);
-	str_start = total_length - formater->value_length;
-	if (formater->decorators.is_precision)
-		build_precision(&result, formater, str_start);
-	build_specifier(&result, formater, str_start);
-	build_flags(&result, formater, str_start);
+	if (fmt->decorators.is_precision)
+		build_precision(&result, fmt, fmt->decorators.is_left_justify
+					? fmt->aux_length : total_length - fmt->processed_length);
+	build_specifier(&result, fmt, fmt->decorators.is_left_justify ?
+				(fmt->aux_length + fmt->processed_length - fmt->value_length) :
+											total_length - fmt->value_length);
+	build_flags(&result, fmt, fmt->decorators.is_left_justify ?
+				0 : total_length - fmt->processed_length - fmt->aux_length);
 	return (ft_lstnew(result, total_length));
 }
 

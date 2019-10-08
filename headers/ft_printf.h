@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/06 23:29:56 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/08 01:26:18 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define Z 	6
 # define T 	7
 # define LF	8
+# define DOUL(x)		(x == 'd'|| x == 'i' || x == 'o' ? TRUE : FALSE)
 # define ISLENGTH(x)	(x == 'h' || x == 'l' || x == 'j' || ISLENGTH1(x))
 # define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L')
 # define DSTR_MAX 50
@@ -62,8 +63,11 @@
 # define INT_SPEC(x) 	(x == 'd'|| x == 'i' || x == 'u' || INT_SPEC1(x))
 # define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' || INT_SPEC2(x))
 # define INT_SPEC2(x) 	(x == 'p' ? TRUE : FALSE)
-# define BASE(x) 		(SIGNPOSSIBLE(x) ? 10 : IS_BASE_OCT(x))
-# define IS_BASE_OCT(x) 		(x == 'o' ? 8 : 16)
+# define BASE10(x)		(x == 'd'|| x == 'i' || x == 'c' || BASE101(x))
+# define BASE101(x)		(x == 'u' ? TRUE : FALSE)
+# define UOCTHEX(x)		(x == 'o'|| x == 'x' || x == 'X' ? TRUE : FALSE)
+# define BASE(x) 		(BASE10(x) ? 10 : IS_BASE_OCT(x))
+# define IS_BASE_OCT(x)	(x == 'o' ? 8 : 16)
 
 /*
 **	Varg

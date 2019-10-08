@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/06 23:33:17 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/08 01:54:07 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,16 @@ static unsigned int		specifier_conv_length(t_formater *fmt)
 	if (fmt->decorators.is_precision && fmt->precision == 0)
 		if (fmt->integer_values.llin == 0 && fmt->integer_values.llin == 0)
 			return (0);
-	return (ft_itoa_base((char*)fmt->integer_values.buffer,
-		SIGNPOSSIBLE(fmt->specifier) ?
-		&fmt->integer_values.llin : &fmt->integer_values.llin,
-		BASE(fmt->specifier),
-		SIGNPOSSIBLE(fmt->specifier)));
+	if (SIGNPOSSIBLE(fmt->specifier))
+		return (ft_itoa_base((char*)fmt->integer_values.buffer,
+			&fmt->integer_values.llin,
+			BASE(fmt->specifier),
+			SIGNPOSSIBLE(fmt->specifier)));
+	else
+		return (ft_itoa_base((char*)fmt->integer_values.buffer,
+			&fmt->integer_values.ullin,
+			BASE(fmt->specifier),
+			SIGNPOSSIBLE(fmt->specifier)));
 }
 
 static unsigned int		numspecifier_length(t_formater *fmt)
@@ -72,9 +77,13 @@ void					flags_length(
 									(fmt->aux_length += LEN_OX(fmt->specifier)))
 		length += fmt->aux_length;
 	if ((fmt->decorators.is_precision && fmt->precision >= fmt->width) ||
-		*current_length > fmt->width)
-		*current_length += length;
-	fmt->processed_length += length;
+		*current_length >= fmt->width)
+	{
+		if (*current_length == fmt->width && !fmt->decorators.is_precision)
+			fmt->processed_length -= length;
+		else if (*current_length > fmt->width)
+			*current_length += length;
+	}
 }
 
 /*
@@ -83,27 +92,31 @@ void					flags_length(
 
 void					length_length(
 	unsigned int *current_length,
-	t_formater *form
+	t_formater *fmt
 )
 {
 	unsigned int	length;
 
 	length = 0;
-	if (INT_SPEC(form->specifier))
+	if (INT_SPEC(fmt->specifier))
 	{
-		length = numspecifier_length(form);
-		form->value_length = length;
-		if (form->decorators.is_precision)
-			length = length < form->precision ? form->precision : length;
+		length = numspecifier_length(fmt);
+		fmt->value_length = length;
+		if (fmt->decorators.is_precision)
+			length = length < fmt->precision ? fmt->precision : length;
+		else
+			length = length < fmt->width && !fmt->decorators.is_left_justify ?
+														fmt->width : length;
 	}
-	if (form->specifier == 's')
+	else if (fmt->specifier == 's')
 	{
-		length = form->decorators.is_precision ?
-								form->precision : ft_strlen(form->value.str);
-		form->value_length = length;
+		length = fmt->decorators.is_precision ?
+								fmt->precision : ft_strlen(fmt->value.str);
+		fmt->value_length = length;
 	}
-	if (form->specifier == 'c' && (form->value_length = 1))
+	else
 		length = 1;
-	form->processed_length = length;
+	fmt->value_length = length == 1 ? 1 : fmt->value_length;
+	fmt->processed_length = length;
 	*current_length = *current_length < length ? length : *current_length;
 }
