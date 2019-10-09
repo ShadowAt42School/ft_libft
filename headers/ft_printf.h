@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/08 01:26:18 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/08 22:37:52 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,10 @@
 # define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L')
 # define DSTR_MAX 50
 
-# define LEN_OX(x)	(x == 'o' ? 1 : 2)
+# define LEN_OX(x)	(x == 'o' ? 1 : LEN_XX(x))
+# define LEN_XX(x)	(x == 'x' ? 2 : 0)
 # define STR_OX(x)	(x == 'o' ? "0" : STR_XXP(x))
-# define STR_XXP(x)	(x == 'x' || x == 'p' ? "0x" : "0X")
+# define STR_XXP(x)	(x == 'x' || x == 'p' || !x ? "0x" : "0X")
 
 /*
 **	Different Types of specifiers and theit possible meta
@@ -59,7 +60,7 @@
 # define ISFLOAT(x)		(x == 'f' || x == 'F' || x == 'e' || ISFLOAT1(x))
 # define ISFLOAT1(x)	(x == 'E' || x == 'g' || x == 'G' || ISFLOAT2(x))
 # define ISFLOAT2(x)	(x == 'a' || x == 'A')
-# define SIGNPOSSIBLE(x)(x == 'd'|| x == 'i' || x == 'c' ? TRUE : FALSE)
+# define SIGNPOSSIBLE(x)(x == 'd'|| x == 'i' ? TRUE : FALSE)
 # define INT_SPEC(x) 	(x == 'd'|| x == 'i' || x == 'u' || INT_SPEC1(x))
 # define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' || INT_SPEC2(x))
 # define INT_SPEC2(x) 	(x == 'p' ? TRUE : FALSE)
@@ -171,9 +172,8 @@ void				build_decorators(t_formater *formater);
 /*
 **	Format Result Length
 */
-void				length_length(
+void				prepare_length(
 								unsigned int *current_length, t_formater *form);
-void				flags_length(unsigned int *current_length, t_formater *fmt);
 
 /*
 **	Format String Builders

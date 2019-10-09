@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/08 01:52:15 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/08 23:17:10 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,8 @@ t_list	*build_format(t_formater *fmt)
 	char			*result;
 	unsigned int	total_length;
 
-	total_length = fmt->width;
-	length_length(&total_length, fmt);
-	flags_length(&total_length, fmt);
+	total_length = 0;
+	prepare_length(&total_length, fmt);
 	result = ft_strnew(total_length);
 	if (fmt->width > 0)
 		ft_memset(result,
@@ -67,10 +66,10 @@ t_list	*build_format(t_formater *fmt)
 		build_precision(&result, fmt, fmt->decorators.is_left_justify
 					? fmt->aux_length : total_length - fmt->processed_length);
 	build_specifier(&result, fmt, fmt->decorators.is_left_justify ?
-				(fmt->aux_length + fmt->processed_length - fmt->value_length) :
+				(fmt->processed_length - fmt->value_length + fmt->aux_length) :
 											total_length - fmt->value_length);
-	build_flags(&result, fmt, fmt->decorators.is_left_justify ?
-				0 : total_length - fmt->processed_length - fmt->aux_length);
+	build_flags(&result, fmt, fmt->decorators.is_left_justify ? 0
+					: total_length - fmt->processed_length - fmt->aux_length);
 	return (ft_lstnew(result, total_length));
 }
 
