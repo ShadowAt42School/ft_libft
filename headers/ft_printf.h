@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/08 22:37:52 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/09 23:26:13 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@
 # define INT_SPEC(x) 	(x == 'd'|| x == 'i' || x == 'u' || INT_SPEC1(x))
 # define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' || INT_SPEC2(x))
 # define INT_SPEC2(x) 	(x == 'p' ? TRUE : FALSE)
+# define SPECIFIER(x)	(ISFLOAT(x) || INT_SPEC(x) || x == 's' ? TRUE : FALSE)
 # define BASE10(x)		(x == 'd'|| x == 'i' || x == 'c' || BASE101(x))
 # define BASE101(x)		(x == 'u' ? TRUE : FALSE)
 # define UOCTHEX(x)		(x == 'o'|| x == 'x' || x == 'X' ? TRUE : FALSE)

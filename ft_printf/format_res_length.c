@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/08 23:27:51 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/09 23:30:28 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,21 +90,24 @@ static void					length_length(
 {
 	unsigned int	length;
 
-	length = fmt->value_length;
-	if (INT_SPEC(fmt->specifier))
+	if (INT_SPEC(fmt->specifier) && (length = fmt->value_length))
 	{
+		fmt->value_length = length;
 		if (fmt->decorators.is_precision)
 			length = length < fmt->precision ? fmt->precision : length;
 		else if (fmt->width > 0 && fmt->decorators.is_pad_zeros &&
 					!fmt->decorators.is_left_justify && length < fmt->width)
 			length = fmt->width - fmt->aux_length;
 	}
-	else if (fmt->specifier == 's')
-		length = fmt->decorators.is_precision ? fmt->precision :
-													ft_strlen(fmt->value.str);
 	else
-		length = 1;
-	fmt->value_length = length == 1 ? 1 : fmt->value_length;
+	{
+		if (fmt->specifier == 's' && *fmt->value.str)
+			length = fmt->decorators.is_precision ? fmt->precision :
+													ft_strlen(fmt->value.str);
+		else if (fmt->specifier == 'c' || !SPECIFIER(fmt->specifier))
+			length = 1;
+		fmt->value_length = length == 1 ? 1 : length;
+	}
 	fmt->processed_length = length;
 	*current_length += length;
 }

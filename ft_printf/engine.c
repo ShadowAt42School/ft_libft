@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/08 23:17:10 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/09 23:15:47 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,12 @@ void	finalize(t_result *result, t_list *pieces)
 	pstart = pieces;
 	while (pstart && (poped = pstart))
 	{
-		ft_memcpy(result->print + cur_len, poped->content, poped->content_size);
-		cur_len += poped->content_size;
+		if (poped->content_size != 0)
+		{
+			ft_memcpy(result->print + cur_len,
+										poped->content, poped->content_size);
+			cur_len += poped->content_size;
+		}
 		free(poped->content);
 		free(poped);
 		pstart = pstart->next;
