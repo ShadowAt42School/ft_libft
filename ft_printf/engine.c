@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/09 23:15:47 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/10 23:23:13 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	ft_engine(va_list *ap, t_result *result)
 		if (*result->format == '%')
 		{
 			result->format++;
+			if (!*result->format)
+				break ;
 			ft_lstaddend(&pieces, parse_format(ap, &result->format));
 			continue;
 		}

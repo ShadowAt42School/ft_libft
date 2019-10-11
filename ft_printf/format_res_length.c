@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/09 23:30:28 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/10 23:20:51 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,12 @@ static unsigned int			specifier_conv_length(t_formater *fmt)
 {
 	if (fmt->decorators.is_precision && fmt->precision == 0)
 		if (fmt->integer_values.llin == 0 && fmt->integer_values.llin == 0)
+		{
+			if (fmt->specifier == 'o' && fmt->decorators.is_preceed_ox &&
+										(fmt->integer_values.buffer[0] = '0'))
+				return (1);
 			return (0);
+		}
 	if (SIGNPOSSIBLE(fmt->specifier))
 		return (ft_itoa_base((char*)fmt->integer_values.buffer,
 			&fmt->integer_values.llin,

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/09 23:38:55 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/10 23:01:42 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	parse_specifier(
 	else
 		formater->value.pspec = va_arg(*ap, void*);
 	(*format)++;
+	if (!formater->value.pspec && formater->specifier == 's')
+		formater->value.pspec = (void *)"(null)";
 }
 
 void	build_decorators(t_formater *fmt)
@@ -118,7 +120,7 @@ void	build_decorators(t_formater *fmt)
 	if (BASE10(fmt->specifier) && ISFLAGSPC(fmt->flags))
 		fmt->decorators.is_blank_space = TRUE;
 	if (ISFLAGHS(fmt->flags) && (ISFLOAT(fmt->specifier) ||
-												UOCTHEX(fmt->specifier)))
+												SPCOX(fmt->specifier)))
 	{
 		fmt->decorators.is_preceed_ox = TRUE;
 		fmt->decorators.is_force_decimal = TRUE;
