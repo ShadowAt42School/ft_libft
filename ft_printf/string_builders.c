@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:36:23 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/10 22:51:51 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 02:15:16 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,21 @@ void			build_flags(
 	unsigned int str_start
 )
 {
-	if (fmt->decorators.is_blank_space && SIGNPOSSIBLE(fmt->specifier))
+	if (fmt->decorators.is_blank_space && INTSIGN(fmt->specifier))
 		*(*res + str_start) = ' ';
-	if ((fmt->decorators.is_force_sign || fmt->integer_values.llin < 0) &&
-												SIGNPOSSIBLE(fmt->specifier))
-		*(*res + str_start) = fmt->integer_values.llin < 0 ? '-' : '+';
-	if (fmt->decorators.is_preceed_ox)
+	if ((fmt->decorators.is_force_sign || fmt->intval.llin < 0) &&
+												INTSIGN(fmt->specifier))
+		*(*res + str_start) = fmt->intval.llin < 0 ? '-' : '+';
+	if (fmt->decorators.is_preceed_ox && ((INTUSIGNS(fmt->specifier) &&
+						(fmt->intval.ullin != 0 || fmt->specifier == 'o')) ||
+						POINTER(fmt->specifier)))
+	{
+		if (fmt->specifier == 'o' && fmt->len.processed > fmt->len.value)
+			return ;
 		ft_memcpy(*res + str_start,
-			fmt->integer_values.ullin != 0 ?
-					STR_OX(fmt->decorators.is_capital) : (*res + str_start),
-			LEN_OX(fmt->specifier));
+			FLHSSTR(fmt->specifier),
+			FLHSLEN(fmt->specifier));
+	}
 }
 
 void			build_precision(
@@ -36,11 +41,8 @@ void			build_precision(
 	unsigned int str_start
 )
 {
-	if (INT_SPEC(fmt->specifier) && !((fmt->integer_values.llin != 0 ||
-						fmt->integer_values.ullin != 0) && fmt->precision == 0))
+	if (INTSPEC(fmt->specifier) && fmt->precision != 0)
 		ft_memset(*res + str_start, '0', fmt->precision);
-	else if (fmt->specifier == 's')
-		ft_memset(*res + str_start, ' ', fmt->processed_length);
 }
 
 void			build_specifier(
@@ -49,19 +51,22 @@ void			build_specifier(
 	unsigned int str_start
 )
 {
-	if (INT_SPEC(fmt->specifier))
+	if (INTSPEC(fmt->specifier))
 	{
+		if (fmt->decorators.is_precision && fmt->precision == 0 &&
+							(fmt->intval.ullin == 0 && fmt->intval.llin == 0))
+			return ;
 		ft_memcpy(
 			*res + str_start,
-			fmt->integer_values.buffer[0] == '-' ?
-				fmt->integer_values.buffer + 1 : fmt->integer_values.buffer,
-			fmt->value_length);
+			fmt->intval.buffer[0] == '-' ?
+				fmt->intval.buffer + 1 : fmt->intval.buffer,
+			fmt->len.value);
 		if (!fmt->decorators.is_capital)
 			ft_str_tolower(*res + str_start);
 	}
-	else if (fmt->specifier == 's')
-		ft_memcpy(*res + str_start, fmt->value.str, fmt->processed_length);
-	else if (fmt->specifier == 'c')
+	else if (STRING(fmt->specifier))
+		ft_memcpy(*res + str_start, fmt->value.str, fmt->len.processed);
+	else if (CHART(fmt->specifier))
 		*(*res + str_start) = fmt->value.schar;
 	else
 		*(*res + str_start) = fmt->specifier;

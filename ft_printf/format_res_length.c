@@ -6,36 +6,32 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/10 23:20:51 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 03:29:14 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_stdio.h"
-#include <stdio.h>
 
 static unsigned int			specifier_conv_length(t_formater *fmt)
 {
-	if (fmt->decorators.is_precision && fmt->precision == 0)
-		if (fmt->integer_values.llin == 0 && fmt->integer_values.llin == 0)
-		{
-			if (fmt->specifier == 'o' && fmt->decorators.is_preceed_ox &&
-										(fmt->integer_values.buffer[0] = '0'))
-				return (1);
-			return (0);
-		}
-	if (SIGNPOSSIBLE(fmt->specifier))
-		return (ft_itoa_base((char*)fmt->integer_values.buffer,
-			&fmt->integer_values.llin,
+	if (INTSIGN(fmt->specifier))
+		return (ft_itoa_base((char*)fmt->intval.buffer,
+			&fmt->intval.llin,
 			BASE(fmt->specifier),
-			SIGNPOSSIBLE(fmt->specifier)));
-	else
-		return (ft_itoa_base((char*)fmt->integer_values.buffer,
-			&fmt->integer_values.ullin,
+			INTSIGN(fmt->specifier)));
+	else if (INTUSIGN(fmt->specifier) || INTUSIGNS(fmt->specifier))
+		return (ft_itoa_base((char*)fmt->intval.buffer,
+			&fmt->intval.ullin,
 			BASE(fmt->specifier),
-			SIGNPOSSIBLE(fmt->specifier)));
+			FALSE));
+	else if (STRING(fmt->specifier))
+		return (ft_strlen(fmt->value.str));
+	else if (CHART(fmt->specifier) || !ISSPECIF(fmt->specifier))
+		return (1);
+	return (0);
 }
 
-static unsigned int			numspecifier_length(t_formater *fmt)
+static unsigned int			specifier_length(t_formater *fmt)
 {
 	long long int			llin;
 	unsigned long long int	ullin;
@@ -59,29 +55,25 @@ static unsigned int			numspecifier_length(t_formater *fmt)
 		ullin = ULLINTD(fmt->value.uintd);
 		llin = LLINTD(fmt->value.intd);
 	}
-	fmt->integer_values.llin = llin;
-	fmt->integer_values.ullin = ullin;
+	fmt->intval.llin = llin;
+	fmt->intval.ullin = ullin;
 	return (specifier_conv_length(fmt));
 }
 
 static void					flags_length(
-	unsigned int *current_length,
 	t_formater *fmt
 )
 {
-	unsigned int length;
-
-	length = 0;
-	if ((fmt->decorators.is_blank_space || fmt->decorators.is_force_sign ||
-				fmt->integer_values.llin < 0) && SIGNPOSSIBLE(fmt->specifier)
-													&& (fmt->aux_length += 1))
-		length += 1;
-	if (fmt->decorators.is_preceed_ox && fmt->integer_values.ullin != 0 &&
-									(fmt->aux_length += LEN_OX(fmt->specifier)))
-		length += fmt->aux_length;
-	if ((fmt->decorators.is_precision && fmt->precision > fmt->width) ||
-																	length > 0)
-		*current_length += length;
+	if (fmt->decorators.is_blank_space || fmt->decorators.is_force_sign ||
+							(fmt->intval.llin < 0 && INTSIGN(fmt->specifier)))
+		fmt->len.aux = 1;
+	if ((fmt->decorators.is_preceed_ox && fmt->intval.ullin != 0) ||
+														POINTER(fmt->specifier))
+	{
+		if (fmt->specifier == 'o' && fmt->len.processed > fmt->len.value)
+			return ;
+		fmt->len.aux = FLHSLEN(fmt->specifier);
+	}
 }
 
 /*
@@ -89,32 +81,30 @@ static void					flags_length(
 */
 
 static void					length_length(
-	unsigned int *current_length,
 	t_formater *fmt
 )
 {
-	unsigned int	length;
+	int	length;
 
-	if (INT_SPEC(fmt->specifier) && (length = fmt->value_length))
+	length = fmt->len.value;
+	if (INTSPEC(fmt->specifier))
 	{
-		fmt->value_length = length;
 		if (fmt->decorators.is_precision)
 			length = length < fmt->precision ? fmt->precision : length;
 		else if (fmt->width > 0 && fmt->decorators.is_pad_zeros &&
-					!fmt->decorators.is_left_justify && length < fmt->width)
-			length = fmt->width - fmt->aux_length;
+					!fmt->decorators.is_ljustify && length < fmt->width)
+			length = fmt->width - fmt->len.aux;
 	}
 	else
 	{
-		if (fmt->specifier == 's' && *fmt->value.str)
-			length = fmt->decorators.is_precision ? fmt->precision :
-													ft_strlen(fmt->value.str);
-		else if (fmt->specifier == 'c' || !SPECIFIER(fmt->specifier))
+		if (fmt->specifier == 's' && fmt->len.value > 0)
+			length = fmt->decorators.is_precision && fmt->precision < length ?
+													fmt->precision : length;
+		else if (fmt->specifier == 'c' || !ISSPECIF(fmt->specifier))
 			length = 1;
-		fmt->value_length = length == 1 ? 1 : length;
+		fmt->len.value = length == 1 ? 1 : length;
 	}
-	fmt->processed_length = length;
-	*current_length += length;
+	fmt->len.processed = length;
 }
 
 void						prepare_length(
@@ -122,9 +112,17 @@ void						prepare_length(
 	t_formater *fmt
 )
 {
-	fmt->value_length = numspecifier_length(fmt);
-	flags_length(current_length, fmt);
-	length_length(current_length, fmt);
-	if (fmt->width > 0 && fmt->width > *current_length)
+	fmt->len.value = specifier_length(fmt);
+	flags_length(fmt);
+	if (fmt->intval.llin == 0 && fmt->intval.ullin == 0 &&
+		fmt->decorators.is_precision && fmt->precision == 0 &&
+		(fmt->specifier != 'o' && !fmt->decorators.is_preceed_ox)
+		&& (fmt->len.value = 0))
+		return ;
+	length_length(fmt);
+	flags_length(fmt);
+	if (fmt->width > 0 && fmt->width > (fmt->len.aux + fmt->len.processed))
 		*current_length = fmt->width;
+	else
+		*current_length = fmt->len.aux + fmt->len.processed;
 }

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/10 23:01:42 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 03:13:05 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,12 @@
 /*
 **	Defines for Flags and Length and Specifier representation	**
 */
-# define ISFLAG1(x)	(x == '+' || x == '-' || x == ' ' ? TRUE : FALSE)
-# define ISFLAG(x)	(x == '0' || ISFLAG1(x) || x == '#' ? TRUE : FALSE)
+# define ISFLAG(x)		(x == '0' || ISFLAG1(x) || x == '#' ? TRUE : FALSE)
+# define ISFLAG1(x)		(x == '+' || x == '-' || x == ' ' ? TRUE : FALSE)
+# define ISWIDPRE(x)	(IS_DIGIT(x) || x == '*' || x == '.' ? TRUE : FALSE)
+# define ISLENGTH(x)	(x == 'h' || x == 'l' || x == 'j' || ISLENGTH1(x))
+# define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L' ? TRUE : FALSE)
+# define ISSPECIF(x)	(FLOAT(x) || INTSPEC(x) || STRS(x))
 
 /*
 **	Flag checks against flag mask	**
@@ -31,6 +35,10 @@
 # define ISFLAGSPC(x) 	(x & 4 ? TRUE : FALSE)
 # define ISFLAGHS(x) 	(x & 8 ? TRUE : FALSE)
 # define ISFLAGZERO(x) 	(x & 16 ? TRUE : FALSE)
+
+# define FLHSLEN(x)	(x == 'o' ? 1 : 2)
+# define FLHSSTR(x)	(x == 'o' ? "0" : FLHSSTR1(x))
+# define FLHSSTR1(x)(x == 'x' || x == 'p' ? "0x" : "0X")
 
 /*
 **	Length
@@ -44,32 +52,35 @@
 # define Z 	6
 # define T 	7
 # define LF	8
-# define DOUL(x)		(x == 'd'|| x == 'i' || x == 'o' ? TRUE : FALSE)
-# define ISLENGTH(x)	(x == 'h' || x == 'l' || x == 'j' || ISLENGTH1(x))
-# define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L')
 # define DSTR_MAX 50
-
-# define LEN_OX(x)	(x == 'o' ? 1 : LEN_XX(x))
-# define LEN_XX(x)	(x == 'x' ? 2 : 0)
-# define STR_OX(x)	(x == 'o' ? "0" : STR_XXP(x))
-# define STR_XXP(x)	(x == 'x' || x == 'p' || !x ? "0x" : "0X")
+# define CAPLEN(x) (x == 'D' || x == 'O' || x == 'U' || x == 'S' || x == 'C')
 
 /*
-**	Different Types of specifiers and theit possible meta
+**	Specifiers check definitions
 */
-# define ISFLOAT(x)		(x == 'f' || x == 'F' || x == 'e' || ISFLOAT1(x))
-# define ISFLOAT1(x)	(x == 'E' || x == 'g' || x == 'G' || ISFLOAT2(x))
-# define ISFLOAT2(x)	(x == 'a' || x == 'A')
-# define SIGNPOSSIBLE(x)(x == 'd'|| x == 'i' ? TRUE : FALSE)
-# define INT_SPEC(x) 	(x == 'd'|| x == 'i' || x == 'u' || INT_SPEC1(x))
-# define INT_SPEC1(x) 	(x == 'o'|| x == 'x' || x == 'X' || INT_SPEC2(x))
-# define INT_SPEC2(x) 	(x == 'p' ? TRUE : FALSE)
-# define SPECIFIER(x)	(ISFLOAT(x) || INT_SPEC(x) || x == 's' ? TRUE : FALSE)
-# define BASE10(x)		(x == 'd'|| x == 'i' || x == 'c' || BASE101(x))
-# define BASE101(x)		(x == 'u' ? TRUE : FALSE)
-# define SPCOX(x)		(x == 'o'|| x == 'x' || x == 'X' ? TRUE : FALSE)
-# define BASE(x) 		(BASE10(x) ? 10 : IS_BASE_OCT(x))
-# define IS_BASE_OCT(x)	(x == 'o' ? 8 : 16)
+# define FLOAT(x)		(x == 'f' || x == 'F' || x == 'e' || FLOAT1(x))
+# define FLOAT1(x)		(x == 'E' || x == 'g' || x == 'G' || FLOAT2(x))
+# define FLOAT2(x)		(x == 'a' || x == 'A' ? TRUE : FALSE)
+
+# define INTSPEC(x) 	(INTSIGN(x) || INTUSIGN(x) || INTUSIGNS(x))
+# define INTSIGN(x) 	(x == 'd' || x == 'i' || INTSIGN1(x) ? TRUE : FALSE)
+# define INTSIGN1(x) 	(x == 'D' || x == 'I' ? TRUE : FALSE)
+# define INTUSIGN(x) 	(x == 'u' || x == 'U' ? TRUE : FALSE)
+# define INTUSIGNS(x) 	(x == 'o' || x == 'x' || x == 'X' || INTUSIGNS1(x))
+# define INTUSIGNS1(x) 	(x == 'O' || POINTER(x))
+# define POINTER(x) 	(x == 'p' ? TRUE : FALSE)
+
+# define STRS(x)		(STRING(x) || CHART(x))
+# define STRING(x)		(x == 'S' || x == 's' ? TRUE : FALSE)
+# define CHART(x)		(x == 'c' || x == 'C' ? TRUE : FALSE)
+
+/*
+**	Base determination
+*/
+# define ISBASE10(x)	(INTSIGN(x) || INTUSIGN(x) || x == 'c' ? TRUE : FALSE)
+# define ISBASEN10(x)	(INTUSIGNS(x))
+# define BASE(x) 		(ISBASE10(x) ? 10 : BASEN10(x))
+# define BASEN10(x)		(x == 'o' ? 8 : 16)
 
 /*
 **	Varg
@@ -103,7 +114,7 @@ union				u_argument {
 */
 typedef struct		s_string_decoration
 {
-	t_bool					is_left_justify;
+	t_bool					is_ljustify;
 	t_bool					is_force_sign;
 	t_bool					is_blank_space;
 	t_bool					is_preceed_ox;
@@ -121,18 +132,23 @@ typedef struct		s_integer_values
 	char					buffer[DSTR_MAX];
 }					t_integer_values;
 
+typedef struct		s_fmtlen
+{
+	int						aux;
+	int						value;
+	int						processed;
+}					t_fmtlen;
+
 typedef struct		s_formater
 {
 	unsigned char			flags;
-	unsigned int			width;
-	unsigned int			precision;
+	int						width;
+	int						precision;
 	unsigned short int		length;
 	unsigned char			specifier;
-	unsigned int			aux_length;
-	unsigned int			value_length;
-	unsigned int			processed_length;
+	t_fmtlen				len;
 	t_string_decoration		decorators;
-	t_integer_values		integer_values;
+	t_integer_values		intval;
 	union u_argument		value;
 }					t_formater;
 
@@ -161,11 +177,12 @@ void				finalize(t_result *result, t_list *pieces);
 /*
 **	Format Parsers
 */
-void				parse_flags(const char **format, t_formater *formater);
+void				parse_flags(
+						const char **format, t_formater *formater, void *ap);
 void				parse_width_precision(
 						const char **format, t_formater *formater, va_list *ap);
-void				parse_length(const char **format, t_formater *formater);
-
+void				parse_length(
+						const char **format, t_formater *formater, void *ap);
 void				parse_specifier(
 						const char **format, t_formater *formater, va_list *ap);
 void				build_decorators(t_formater *formater);

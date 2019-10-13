@@ -6,15 +6,19 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/10 23:01:42 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 03:08:42 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/ft_stdio.h"
 
-void	parse_flags(const char **format, t_formater *formater)
+void	parse_flags(
+	const char **format,
+	t_formater *formater,
+	void *ap
+)
 {
-	while (ISFLAG(**format))
+	while (ISFLAG(**format) && ap)
 	{
 		if (**format == '+')
 			formater->flags = formater->flags | 1;
@@ -37,34 +41,39 @@ void	parse_width_precision(
 )
 {
 	int				length;
-	char			is_variable;
-	static t_bool	call_times;
+	t_bool			is_variable;
+	t_bool			is_pres;
 
 	is_variable = FALSE;
-	if (call_times == 2)
-		call_times = 0;
+	is_pres = FALSE;
 	length = 0;
-	if (**format == '.' && call_times == 1 &&
-									(formater->decorators.is_precision = TRUE))
+	if (**format == '.' && (formater->decorators.is_precision = TRUE) &&
+															(is_pres = TRUE))
 		(*format)++;
 	if (**format == '*')
 	{
 		(*format)++;
-		length = va_arg(*ap, unsigned int);
+		length = va_arg(*ap, int);
+		if (length < 0 && ((!is_pres && (formater->flags |= 2)) ||
+					(is_pres && !(formater->decorators.is_precision = FALSE))))
+			length *= is_pres ? 0 : -1;
 		is_variable = TRUE;
 	}
-	if (formater->decorators.is_precision && call_times == 1)
+	if (is_pres)
 		formater->precision = is_variable ? length : ft_atoi(*format);
-	if (call_times == 0 && !formater->decorators.is_precision)
+	else
 		formater->width = is_variable ? length : ft_atoi(*format);
 	if (!is_variable)
 		ft_strnumlen_inplace(format);
-	call_times++;
 }
 
-void	parse_length(const char **format, t_formater *formater)
+void	parse_length(
+	const char **format,
+	t_formater *formater,
+	void *ap
+)
 {
-	while (ISLENGTH(**format))
+	while (ISLENGTH(**format) && ap)
 	{
 		if (**format == 'h' && formater->length < HH)
 			formater->length = *(*format + 1) == 'h' ? HH : H;
@@ -89,7 +98,7 @@ void	parse_specifier(
 )
 {
 	formater->specifier = **format;
-	if (ISFLOAT(**format))
+	if (FLOAT(**format))
 	{
 		if (formater->length == LF)
 			formater->value.ldnumber = va_arg(*ap, long double);
@@ -107,26 +116,21 @@ void	build_decorators(t_formater *fmt)
 {
 	if (IS_UPPER(fmt->specifier))
 	{
-		if (fmt->length == NO && fmt->length != LF && DOUL(fmt->specifier))
+		if (fmt->length < L && fmt->length != LF && CAPLEN(fmt->specifier))
 			fmt->length = L;
 		fmt->decorators.is_capital = TRUE;
-		fmt->specifier = ft_tolower(fmt->specifier);
 	}
-	if (BASE10(fmt->specifier) &&
-					(ISFLAGSP(fmt->flags)))
-		fmt->decorators.is_force_sign = TRUE;
-	if (ISFLAGSM(fmt->flags))
-		fmt->decorators.is_left_justify = TRUE;
-	if (BASE10(fmt->specifier) && ISFLAGSPC(fmt->flags))
-		fmt->decorators.is_blank_space = TRUE;
-	if (ISFLAGHS(fmt->flags) && (ISFLOAT(fmt->specifier) ||
-												SPCOX(fmt->specifier)))
-	{
-		fmt->decorators.is_preceed_ox = TRUE;
-		fmt->decorators.is_force_decimal = TRUE;
-	}
-	if (ISFLAGZERO(fmt->flags) ||
-		(INT_SPEC(fmt->specifier) && fmt->decorators.is_precision))
+	fmt->decorators.is_force_sign = ISFLAGSP(fmt->flags) &&
+														INTSIGN(fmt->specifier);
+	fmt->decorators.is_ljustify = ISFLAGSM(fmt->flags);
+	fmt->decorators.is_blank_space = ISFLAGSPC(fmt->flags) &&
+														INTSIGN(fmt->specifier);
+	fmt->decorators.is_preceed_ox = (ISFLAGHS(fmt->flags) &&
+													INTUSIGNS(fmt->specifier));
+	fmt->decorators.is_force_decimal = (ISFLAGHS(fmt->flags) &&
+														FLOAT(fmt->specifier));
+	if ((ISFLAGZERO(fmt->flags) && !ISFLAGSM(fmt->flags)) ||
+		(INTSPEC(fmt->specifier) && fmt->decorators.is_precision))
 		fmt->decorators.is_pad_zeros = TRUE;
 	if (fmt->specifier == 'p' && (fmt->length = 4))
 		fmt->decorators.is_preceed_ox = TRUE;
