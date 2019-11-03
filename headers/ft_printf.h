@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 03:13:05 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 18:16:26 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <stdarg.h>
 # include <stddef.h>
 # include <inttypes.h>
+
+# define ISANYOFCOMP(x) (ISFLAG(x) || ISWIDPRE(x) || ISLENGTH(x) ? TRUE : FALSE)
 
 /*
 **	Defines for Flags and Length and Specifier representation	**
