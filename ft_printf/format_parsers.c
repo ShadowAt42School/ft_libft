@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 03:08:42 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 19:03:29 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,18 +98,21 @@ void	parse_specifier(
 )
 {
 	formater->specifier = **format;
-	if (FLOAT(**format))
+	if (ISSPECIF(**format))
 	{
-		if (formater->length == LF)
-			formater->value.ldnumber = va_arg(*ap, long double);
+		if (FLOAT(**format))
+		{
+			if (formater->length == LF)
+				formater->value.ldnumber = va_arg(*ap, long double);
+			else
+				formater->value.dnumber = va_arg(*ap, double);
+		}
 		else
-			formater->value.dnumber = va_arg(*ap, double);
+			formater->value.pspec = va_arg(*ap, void*);
+		if (!formater->value.pspec && formater->specifier == 's')
+			formater->value.pspec = (void *)"(null)";
 	}
-	else
-		formater->value.pspec = va_arg(*ap, void*);
 	(*format)++;
-	if (!formater->value.pspec && formater->specifier == 's')
-		formater->value.pspec = (void *)"(null)";
 }
 
 void	build_decorators(t_formater *fmt)

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 02:11:21 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/10/13 18:17:00 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ t_list	*parse_format(va_list *ap, const char **format_origin)
 	t_formater	formatter;
 
 	ft_bzero(&formatter, sizeof(t_formater));
-	while (!ISSPECIF(**format_origin))
+	while (!ISSPECIF(**format_origin) && ISANYOFCOMP(**format_origin))
 	{
 		if (ISFLAG(**format_origin))
 			parse_flags(format_origin, &formatter, ap);
@@ -51,8 +51,7 @@ t_list	*parse_format(va_list *ap, const char **format_origin)
 		if (ISLENGTH(**format_origin))
 			parse_length(format_origin, &formatter, ap);
 	}
-	if (ISSPECIF(**format_origin))
-		parse_specifier(format_origin, &formatter, ap);
+	parse_specifier(format_origin, &formatter, ap);
 	build_decorators(&formatter);
 	return (build_format(&formatter));
 }
