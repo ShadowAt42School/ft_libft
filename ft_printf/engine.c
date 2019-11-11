@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 18:17:00 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/10 21:33:03 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_engine(va_list *ap, t_result *result)
 			continue;
 		}
 		clean_str_len = ft_strdelim(&clean_str, result->format, '%');
-		ft_lstaddend(&pieces, ft_lstnew(clean_str, clean_str_len));
+		ft_lstaddend(&pieces, ft_lstnewp(clean_str, clean_str_len));
 		result->format += clean_str_len;
 	}
 	finalize(result, pieces);
@@ -65,8 +65,8 @@ t_list	*build_format(t_formater *fmt)
 	prepare_length(&total_length, fmt);
 	result = ft_strnew(total_length);
 	if (fmt->width > 0)
-		ft_memset(result, fmt->decorators.is_pad_zeros && fmt->precision == 0 ?
-													'0' : ' ', total_length);
+		ft_memset(result, fmt->decorators.is_pad_zeros &&
+					!fmt->decorators.is_precision ? '0' : ' ', total_length);
 	if (fmt->decorators.is_precision)
 		build_precision(&result, fmt, fmt->decorators.is_ljustify
 					? fmt->len.aux : total_length - fmt->len.processed);
@@ -75,7 +75,7 @@ t_list	*build_format(t_formater *fmt)
 											total_length - fmt->len.value);
 	build_flags(&result, fmt, fmt->decorators.is_ljustify ? 0
 					: total_length - fmt->len.processed - fmt->len.aux);
-	return (ft_lstnew(result, total_length));
+	return (ft_lstnewp(result, total_length));
 }
 
 void	finalize(t_result *result, t_list *pieces)

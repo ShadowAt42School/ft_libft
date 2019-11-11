@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 03:29:14 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/10 23:54:55 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static void					flags_length(
 	if ((fmt->decorators.is_preceed_ox && fmt->intval.ullin != 0) ||
 														POINTER(fmt->specifier))
 	{
-		if (fmt->specifier == 'o' && fmt->len.processed > fmt->len.value)
+		if (fmt->specifier == 'o' && fmt->len.processed > fmt->len.value &&
+									!(fmt->len.aux -= FLHSLEN(fmt->specifier)))
 			return ;
 		fmt->len.aux = FLHSLEN(fmt->specifier);
 	}
@@ -91,6 +92,9 @@ static void					length_length(
 	{
 		if (fmt->decorators.is_precision)
 			length = length < fmt->precision ? fmt->precision : length;
+		else if (fmt->decorators.is_precision && fmt->precision == 0 &&
+							(fmt->intval.ullin == 0 && fmt->intval.llin == 0))
+			length = 0;
 		else if (fmt->width > 0 && fmt->decorators.is_pad_zeros &&
 					!fmt->decorators.is_ljustify && length < fmt->width)
 			length = fmt->width - fmt->len.aux;
@@ -116,7 +120,7 @@ void						prepare_length(
 	flags_length(fmt);
 	if (fmt->intval.llin == 0 && fmt->intval.ullin == 0 &&
 		fmt->decorators.is_precision && fmt->precision == 0 &&
-		(fmt->specifier != 'o' && !fmt->decorators.is_preceed_ox)
+		!(fmt->specifier == 'o' && fmt->decorators.is_preceed_ox)
 		&& (fmt->len.value = 0))
 		return ;
 	length_length(fmt);

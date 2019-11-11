@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:36:23 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 02:15:16 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/10 23:18:14 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,7 @@ void			build_specifier(
 		ft_memcpy(
 			*res + str_start,
 			fmt->intval.buffer[0] == '-' ?
-				fmt->intval.buffer + 1 : fmt->intval.buffer,
-			fmt->len.value);
+			fmt->intval.buffer + 1 : fmt->intval.buffer, fmt->len.value);
 		if (!fmt->decorators.is_capital)
 			ft_str_tolower(*res + str_start);
 	}

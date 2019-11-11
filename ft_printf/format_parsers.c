@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/10/13 19:03:29 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/10 18:07:18 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	parse_specifier(
 		}
 		else
 			formater->value.pspec = va_arg(*ap, void*);
-		if (!formater->value.pspec && formater->specifier == 's')
+		if (!formater->value.pspec && STRING(formater->specifier))
 			formater->value.pspec = (void *)"(null)";
 	}
 	(*format)++;
