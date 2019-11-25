@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/10 18:07:18 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/24 22:52:07 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	parse_specifier(
 	va_list *ap
 )
 {
+	if (!**format)
+		return ;
 	formater->specifier = **format;
 	if (ISSPECIF(**format))
 	{
