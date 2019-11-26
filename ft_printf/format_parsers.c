@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/11 00:09:26 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/24 22:52:07 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	parse_specifier(
 	va_list *ap
 )
 {
+	if (!**format)
+		return ;
 	formater->specifier = **format;
 	if (ISSPECIF(**format))
 	{
@@ -137,7 +139,4 @@ void	build_decorators(t_formater *fmt)
 		fmt->decorators.is_pad_zeros = TRUE;
 	if (fmt->specifier == 'p' && (fmt->length = 4))
 		fmt->decorators.is_preceed_ox = TRUE;
-	if (!fmt->decorators.is_precision && FLOAT(fmt->specifier) &&
-														(fmt->precision = 6))
-		fmt->decorators.is_precision = TRUE;
 }

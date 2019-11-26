@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/10 21:33:03 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/25 20:26:12 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,22 @@ t_list	*build_format(t_formater *fmt)
 	unsigned int	total_length;
 
 	total_length = 0;
-	prepare_length(&total_length, fmt);
-	result = ft_strnew(total_length);
-	if (fmt->width > 0)
-		ft_memset(result, fmt->decorators.is_pad_zeros &&
+	if (fmt->specifier)
+	{
+		prepare_length(&total_length, fmt);
+		result = ft_strnew(total_length);
+		if (fmt->width > 0)
+			ft_memset(result, fmt->decorators.is_pad_zeros &&
 					!fmt->decorators.is_precision ? '0' : ' ', total_length);
-	if (fmt->decorators.is_precision)
-		build_precision(&result, fmt, fmt->decorators.is_ljustify
-					? fmt->len.aux : total_length - fmt->len.processed);
-	build_specifier(&result, fmt, fmt->decorators.is_ljustify ?
-				(fmt->len.processed - fmt->len.value + fmt->len.aux) :
-											total_length - fmt->len.value);
-	build_flags(&result, fmt, fmt->decorators.is_ljustify ? 0
-					: total_length - fmt->len.processed - fmt->len.aux);
+		if (fmt->decorators.is_precision)
+			build_precision(&result, fmt, fmt->decorators.is_ljustify
+						? fmt->len.aux : total_length - fmt->len.processed);
+		build_specifier(&result, fmt, fmt->decorators.is_ljustify ?
+					(fmt->len.processed - fmt->len.value + fmt->len.aux) :
+												total_length - fmt->len.value);
+		build_flags(&result, fmt, fmt->decorators.is_ljustify ? 0
+						: total_length - fmt->len.processed - fmt->len.aux);
+	}
 	return (ft_lstnewp(result, total_length));
 }
 
@@ -100,9 +103,9 @@ void	finalize(t_result *result, t_list *pieces)
 			ft_memcpy(result->print + cur_len,
 										poped->content, poped->content_size);
 			cur_len += poped->content_size;
+			free(poped->content);
+			free(poped);
 		}
-		free(poped->content);
-		free(poped);
 		pstart = pstart->next;
 	}
 }

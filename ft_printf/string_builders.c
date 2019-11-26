@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:36:23 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/10 23:18:14 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/24 22:47:41 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void			build_specifier(
 	unsigned int str_start
 )
 {
+	if (!fmt->specifier)
+		return ;
 	if (INTSPEC(fmt->specifier))
 	{
 		if (fmt->decorators.is_precision && fmt->precision == 0 &&
