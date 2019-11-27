@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/10 23:54:55 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/11/27 02:42:52 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,15 @@ static unsigned int			specifier_conv_length(t_formater *fmt)
 			&fmt->intval.ullin,
 			BASE(fmt->specifier),
 			FALSE));
+	else if (FLOAT(fmt->specifier) && fmt->length != LF)
+		return (ft_dtos(fmt->value.dnumber,
+			fmt->decorators.is_precision ? fmt->precision : -1,
+			fmt->decorators.is_preceed_ox,
+			(char*)fmt->intval.buffer));
+	else if (FLOAT(fmt->specifier) && fmt->length == LF)
+		return (ft_ldtos(fmt->value.ldnumber,
+			fmt->decorators.is_precision ? fmt->precision : -1,
+			fmt->decorators.is_preceed_ox, (char*)fmt->intval.buffer));
 	else if (STRING(fmt->specifier))
 		return (ft_strlen(fmt->value.str));
 	else if (CHART(fmt->specifier) || !ISSPECIF(fmt->specifier))
