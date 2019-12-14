@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/12 22:50:14 by maghayev          #+#    #+#             */
-/*   Updated: 2019/12/13 22:26:38 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/12/13 23:57:30 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_bool	is_pointer(char x)
 
 t_bool	is_strs(char x)
 {
-	return (is_sint(x) || is_uint(x) || is_uints(x));
+	return (is_str(x) || is_char(x));
 }
 
 t_bool	is_str(char x)

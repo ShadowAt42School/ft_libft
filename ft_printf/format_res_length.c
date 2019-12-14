@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:45:54 by maghayev          #+#    #+#             */
-/*   Updated: 2019/12/13 23:01:12 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/12/14 06:36:58 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,16 @@ static unsigned int			specifier_conv_length(t_formater *fmt)
 {
 	if (is_sint(fmt->specifier))
 		return (ft_itoa_base((char*)fmt->intval.buffer,
-			&fmt->intval.llin,
-			base(fmt->specifier),
-			TRUE));
+								&fmt->intval.llin, base(fmt->specifier), TRUE));
 	else if (is_uint(fmt->specifier) || is_uints(fmt->specifier))
 		return (ft_itoa_base((char*)fmt->intval.buffer,
-			&fmt->intval.ullin,
-			base(fmt->specifier),
-			FALSE));
+							&fmt->intval.ullin, base(fmt->specifier), FALSE));
 	else if (is_float(fmt->specifier) && fmt->length != LF)
 		return (ft_dtos(fmt->value.dnumber,
 			fmt->decorators.is_precision ? fmt->precision : -1,
-			fmt->decorators.is_preceed_ox,
-			(char*)fmt->intval.buffer));
+			fmt->decorators.is_preceed_ox, (char*)fmt->intval.buffer));
 	else if (is_float(fmt->specifier) && fmt->length == LF)
-		return (ft_ldtos(fmt->value.ldnumber,
+		return (ft_dtos(fmt->value.ldnumber,
 			fmt->decorators.is_precision ? fmt->precision : -1,
 			fmt->decorators.is_preceed_ox, (char*)fmt->intval.buffer));
 	else if (is_str(fmt->specifier))
@@ -74,12 +69,14 @@ static void					flags_length(
 )
 {
 	if (fmt->decorators.is_blank_space || fmt->decorators.is_force_sign ||
-							(fmt->intval.llin < 0 && is_sint(fmt->specifier)) ||
-						((fmt->value.dnumber < 0 || fmt->value.ldnumber < 0) &&
-													is_float(fmt->specifier)))
+							(fmt->intval.llin < 0 && is_sint(fmt->specifier)))
+		fmt->len.aux = 1;
+	if (is_float(fmt->specifier) &&
+							((fmt->length != LF && fmt->value.dnumber < 0) ||
+								(fmt->length == LF && fmt->value.ldnumber < 0)))
 		fmt->len.aux = 1;
 	if ((fmt->decorators.is_preceed_ox &&
-						(is_uint(fmt->specifier) && fmt->intval.ullin != 0))
+						(is_uints(fmt->specifier) && fmt->intval.ullin != 0))
 												|| is_pointer(fmt->specifier))
 	{
 		if (fmt->specifier == 'o' && fmt->len.processed > fmt->len.value &&
@@ -133,7 +130,7 @@ void						prepare_length(
 	if (fmt->intval.llin == 0 && fmt->intval.ullin == 0 &&
 		fmt->decorators.is_precision && fmt->precision == 0 &&
 		!(fmt->specifier == 'o' && fmt->decorators.is_preceed_ox)
-		&& (fmt->len.value = 0))
+		&& is_int(fmt->specifier) && (fmt->len.value = 0))
 		return ;
 	length_length(fmt);
 	flags_length(fmt);
