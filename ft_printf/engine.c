@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/26 21:36:00 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/12/13 22:54:24 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ t_list	*parse_format(va_list *ap, const char **format_origin)
 	t_formater	formatter;
 
 	ft_bzero(&formatter, sizeof(t_formater));
-	while (!ISSPECIF(**format_origin) && ISANYOFCOMP(**format_origin))
+	while (!is_spec(**format_origin) && is_comp(**format_origin))
 	{
-		if (ISFLAG(**format_origin))
+		if (is_flag(**format_origin))
 			parse_flags(format_origin, &formatter, ap);
-		if (ISWIDPRE(**format_origin))
+		if (is_widpre(**format_origin))
 			parse_width_precision(format_origin, &formatter, ap);
-		if (ISLENGTH(**format_origin))
+		if (is_len(**format_origin))
 			parse_length(format_origin, &formatter, ap);
 	}
 	parse_specifier(format_origin, &formatter, ap);

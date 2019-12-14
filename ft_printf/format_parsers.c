@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/24 22:52:07 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/12/13 22:57:17 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@ void	parse_flags(
 	void *ap
 )
 {
-	while (ISFLAG(**format) && ap)
+	while (is_flag(**format) && ap)
 	{
 		if (**format == '+')
 			formater->flags = formater->flags | 1;
 		else if (**format == '-')
 			formater->flags = formater->flags | 2;
-		else if (**format == ' ' && !ISFLAGSP(formater->flags))
+		else if (**format == ' ' && !is_fsp(formater->flags))
 			formater->flags = formater->flags | 4;
 		else if (**format == '#')
 			formater->flags = formater->flags | 8;
-		else if (**format == '0' && !ISFLAGSM(formater->flags))
+		else if (**format == '0' && !is_fsm(formater->flags))
 			formater->flags = formater->flags | 16;
 		(*format)++;
 	}
@@ -73,7 +73,7 @@ void	parse_length(
 	void *ap
 )
 {
-	while (ISLENGTH(**format) && ap)
+	while (is_len(**format) && ap)
 	{
 		if (**format == 'h' && formater->length < HH)
 			formater->length = *(*format + 1) == 'h' ? HH : H;
@@ -100,9 +100,9 @@ void	parse_specifier(
 	if (!**format)
 		return ;
 	formater->specifier = **format;
-	if (ISSPECIF(**format))
+	if (is_spec(**format))
 	{
-		if (FLOAT(**format))
+		if (is_float(**format))
 		{
 			if (formater->length == LF)
 				formater->value.ldnumber = va_arg(*ap, long double);
@@ -111,7 +111,7 @@ void	parse_specifier(
 		}
 		else
 			formater->value.pspec = va_arg(*ap, void*);
-		if (!formater->value.pspec && STRING(formater->specifier))
+		if (!formater->value.pspec && is_str(formater->specifier))
 			formater->value.pspec = (void *)"(null)";
 	}
 	(*format)++;
@@ -119,23 +119,23 @@ void	parse_specifier(
 
 void	build_decorators(t_formater *fmt)
 {
-	if (IS_UPPER(fmt->specifier))
+	if (ft_isupper(fmt->specifier))
 	{
-		if (fmt->length < L && fmt->length != LF && CAPLEN(fmt->specifier))
+		if (fmt->length < L && fmt->length != LF && caplen(fmt->specifier))
 			fmt->length = L;
 		fmt->decorators.is_capital = TRUE;
 	}
-	fmt->decorators.is_force_sign = ISFLAGSP(fmt->flags) &&
-														INTSIGN(fmt->specifier);
-	fmt->decorators.is_ljustify = ISFLAGSM(fmt->flags);
-	fmt->decorators.is_blank_space = ISFLAGSPC(fmt->flags) &&
-														INTSIGN(fmt->specifier);
-	fmt->decorators.is_preceed_ox = (ISFLAGHS(fmt->flags) &&
-													INTUSIGNS(fmt->specifier));
-	fmt->decorators.is_force_decimal = (ISFLAGHS(fmt->flags) &&
-														FLOAT(fmt->specifier));
-	if ((ISFLAGZERO(fmt->flags) && !ISFLAGSM(fmt->flags)) ||
-		(INTSPEC(fmt->specifier) && fmt->decorators.is_precision))
+	fmt->decorators.is_force_sign = is_fsp(fmt->flags) &&
+						(is_sint(fmt->specifier) || is_float(fmt->specifier));
+	fmt->decorators.is_ljustify = is_fsm(fmt->flags);
+	fmt->decorators.is_blank_space = is_fspc(fmt->flags) &&
+						(is_sint(fmt->specifier) || is_float(fmt->specifier));
+	fmt->decorators.is_preceed_ox = is_fhs(fmt->flags) &&
+						(is_uints(fmt->specifier) || is_float(fmt->specifier));
+	fmt->decorators.is_force_decimal = (is_fhs(fmt->flags) &&
+													is_float(fmt->specifier));
+	if ((is_fzero(fmt->flags) && !is_fsm(fmt->flags)) ||
+		(is_int(fmt->specifier) && fmt->decorators.is_precision))
 		fmt->decorators.is_pad_zeros = TRUE;
 	if (fmt->specifier == 'p' && (fmt->length = 4))
 		fmt->decorators.is_preceed_ox = TRUE;
