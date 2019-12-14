@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/24 23:21:45 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/12/13 22:55:19 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,6 @@
 # include <stdarg.h>
 # include <stddef.h>
 # include <inttypes.h>
-
-# define ISANYOFCOMP(x) (ISFLAG(x) || ISWIDPRE(x) || ISLENGTH(x) ? TRUE : FALSE)
-
-/*
-**	Defines for Flags and Length and Specifier representation	**
-*/
-# define ISFLAG(x)		(x == '0' || ISFLAG1(x) || x == '#' ? TRUE : FALSE)
-# define ISFLAG1(x)		(x == '+' || x == '-' || x == ' ' ? TRUE : FALSE)
-# define ISWIDPRE(x)	(IS_DIGIT(x) || x == '*' || x == '.' ? TRUE : FALSE)
-# define ISLENGTH(x)	(x == 'h' || x == 'l' || x == 'j' || ISLENGTH1(x))
-# define ISLENGTH1(x)	(x == 'z' || x == 't' || x == 'L' ? TRUE : FALSE)
-# define ISSPECIF(x)	(FLOAT(x) || INTSPEC(x) || STRS(x))
-
-/*
-**	Flag checks against flag mask	**
-*/
-# define ISFLAGSP(x) 	(x & 1 ? TRUE : FALSE)
-# define ISFLAGSM(x) 	(x & 2 ? TRUE : FALSE)
-# define ISFLAGSPC(x) 	(x & 4 ? TRUE : FALSE)
-# define ISFLAGHS(x) 	(x & 8 ? TRUE : FALSE)
-# define ISFLAGZERO(x) 	(x & 16 ? TRUE : FALSE)
-
-# define FLHSLEN(x)	(x == 'o' ? 1 : 2)
-# define FLHSSTR(x)	(x == 'o' ? "0" : FLHSSTR1(x))
-# define FLHSSTR1(x)(x == 'x' || x == 'p' ? "0x" : "0X")
 
 /*
 **	Length
@@ -55,34 +30,6 @@
 # define T 	7
 # define LF	8
 # define DSTR_MAX 50
-# define CAPLEN(x) (x == 'D' || x == 'O' || x == 'U' || x == 'S' || x == 'C')
-
-/*
-**	Specifiers check definitions
-*/
-# define FLOAT(x)		(x == 'f' || x == 'F' || x == 'e' || FLOAT1(x))
-# define FLOAT1(x)		(x == 'E' || x == 'g' || x == 'G' || FLOAT2(x))
-# define FLOAT2(x)		(x == 'a' || x == 'A' ? TRUE : FALSE)
-
-# define INTSPEC(x) 	(INTSIGN(x) || INTUSIGN(x) || INTUSIGNS(x))
-# define INTSIGN(x) 	(x == 'd' || x == 'i' || INTSIGN1(x) ? TRUE : FALSE)
-# define INTSIGN1(x) 	(x == 'D' || x == 'I' ? TRUE : FALSE)
-# define INTUSIGN(x) 	(x == 'u' || x == 'U' ? TRUE : FALSE)
-# define INTUSIGNS(x) 	(x == 'o' || x == 'x' || x == 'X' || INTUSIGNS1(x))
-# define INTUSIGNS1(x) 	(x == 'O' || POINTER(x))
-# define POINTER(x) 	(x == 'p' ? TRUE : FALSE)
-
-# define STRS(x)		(STRING(x) || CHART(x))
-# define STRING(x)		(x == 'S' || x == 's' ? TRUE : FALSE)
-# define CHART(x)		(x == 'c' || x == 'C' ? TRUE : FALSE)
-
-/*
-**	Base determination
-*/
-# define ISBASE10(x)	(INTSIGN(x) || INTUSIGN(x) || x == 'c' ? TRUE : FALSE)
-# define ISBASEN10(x)	(INTUSIGNS(x))
-# define BASE(x) 		(ISBASE10(x) ? 10 : BASEN10(x))
-# define BASEN10(x)		(x == 'o' ? 8 : 16)
 
 /*
 **	Varg
@@ -203,5 +150,56 @@ void				build_precision(
 						char **res, t_formater *fmt, unsigned int str_start);
 void				build_specifier(
 						char **res, t_formater *fmt, unsigned int str_start);
+
+/*
+**	Helpers
+*/
+
+/*
+**	Format checks
+*/
+t_bool				is_comp(char x);
+t_bool				is_flag(char x);
+t_bool				is_widpre(char x);
+t_bool				is_len(char x);
+t_bool				is_spec(char x);
+
+/*
+**	Specifier check
+*/
+t_bool				is_float(char x);
+t_bool				is_int(char x);
+t_bool				is_sint(char x);
+t_bool				is_uint(char x);
+t_bool				is_uints(char x);
+t_bool				is_pointer(char x);
+t_bool				is_strs(char x);
+t_bool				is_str(char x);
+t_bool				is_char(char x);
+
+/*
+**	Flag checks
+*/
+t_bool				is_fsp(unsigned char x);
+t_bool				is_fsm(unsigned char x);
+t_bool				is_fspc(unsigned char x);
+t_bool				is_fhs(unsigned char x);
+t_bool				is_fzero(unsigned char x);
+
+/*
+**	Base checks
+*/
+t_bool				is_base10(char x);
+t_bool				is_basen10(char x);
+int					base(char x);
+int					basen10(char x);
+
+/*
+**	Aux
+*/
+int					flhslen(char x);
+char				*flhsstr(char x);
+char				*flhsstrx(char x);
+t_bool				caplen(char x);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 20:36:23 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/24 22:47:41 by maghayev         ###   ########.fr       */
+/*   Updated: 2019/12/13 23:02:40 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,21 @@ void			build_flags(
 	unsigned int str_start
 )
 {
-	if (fmt->decorators.is_blank_space && INTSIGN(fmt->specifier))
+	if (fmt->decorators.is_blank_space &&
+						(is_sint(fmt->specifier) || is_float(fmt->specifier)))
 		*(*res + str_start) = ' ';
-	if ((fmt->decorators.is_force_sign || fmt->intval.llin < 0) &&
-												INTSIGN(fmt->specifier))
-		*(*res + str_start) = fmt->intval.llin < 0 ? '-' : '+';
-	if (fmt->decorators.is_preceed_ox && ((INTUSIGNS(fmt->specifier) &&
+	if ((fmt->decorators.is_force_sign || fmt->intval.buffer[0] == '-') &&
+						(is_sint(fmt->specifier) || is_float(fmt->specifier)))
+		*(*res + str_start) = fmt->intval.buffer[0] == '-' ? '-' : '+';
+	if (fmt->decorators.is_preceed_ox && ((is_uints(fmt->specifier) &&
 						(fmt->intval.ullin != 0 || fmt->specifier == 'o')) ||
-						POINTER(fmt->specifier)))
+						is_pointer(fmt->specifier)))
 	{
 		if (fmt->specifier == 'o' && fmt->len.processed > fmt->len.value)
 			return ;
 		ft_memcpy(*res + str_start,
-			FLHSSTR(fmt->specifier),
-			FLHSLEN(fmt->specifier));
+			flhsstr(fmt->specifier),
+			flhslen(fmt->specifier));
 	}
 }
 
@@ -41,7 +42,7 @@ void			build_precision(
 	unsigned int str_start
 )
 {
-	if (INTSPEC(fmt->specifier) && fmt->precision != 0)
+	if (is_int(fmt->specifier) && fmt->precision != 0)
 		ft_memset(*res + str_start, '0', fmt->precision);
 }
 
@@ -53,7 +54,7 @@ void			build_specifier(
 {
 	if (!fmt->specifier)
 		return ;
-	if (INTSPEC(fmt->specifier))
+	if (is_int(fmt->specifier))
 	{
 		if (fmt->decorators.is_precision && fmt->precision == 0 &&
 							(fmt->intval.ullin == 0 && fmt->intval.llin == 0))
@@ -63,11 +64,15 @@ void			build_specifier(
 			fmt->intval.buffer[0] == '-' ?
 			fmt->intval.buffer + 1 : fmt->intval.buffer, fmt->len.value);
 		if (!fmt->decorators.is_capital)
-			ft_str_tolower(*res + str_start);
+			ft_strlower(*res + str_start);
 	}
-	else if (STRING(fmt->specifier))
+	else if (is_float(fmt->specifier))
+		ft_memcpy(*res + str_start,
+			fmt->intval.buffer[0] == '-' ?
+			fmt->intval.buffer + 1 : fmt->intval.buffer, fmt->len.processed);
+	else if (is_str(fmt->specifier))
 		ft_memcpy(*res + str_start, fmt->value.str, fmt->len.processed);
-	else if (CHART(fmt->specifier))
+	else if (is_char(fmt->specifier))
 		*(*res + str_start) = fmt->value.schar;
 	else
 		*(*res + str_start) = fmt->specifier;
