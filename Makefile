@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2019/12/13 23:40:24 by maghayev         ###   ########.fr        #
+#    Updated: 2019/12/15 17:56:15 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ DEPS = headers/lib/ft_printf.h headers/lib/ft_stdio.h
 SRC  = $(wildcard ft_printf/*.c)
 SRCH  = $(wildcard ft_printf/helpers/*.c)
 
-ROOTLIBS = headers/lib/libft/libft.a
+ROOTLIBS = libs/libft/libft.a
 
 OBJECT = $(SRC:.c=.o) $(SRCH:.c=.o)
 
@@ -38,15 +38,15 @@ OBJECT = $(SRC:.c=.o) $(SRCH:.c=.o)
 all: $(NAME)
 
 $(NAME): $(ROOTLIBS) $(OBJECT)
-	@ar rc $@ headers/lib/libft/modules/*/*.o $(OBJECT)
+	@ar rc $@ libs/libft/modules/*/*.o $(OBJECT)
 	@ranlib $@
 	@echo "Finished Building Printf!"
 
 libftmake:
-	@make -C headers/lib/libft/
+	@make -C libs/libft/
 
 clean:
-	@make clean -C headers/lib/libft/
+	@make clean -C libs/libft/
 	@echo $(PURPLE)
 	@echo "whaaaaa, claning printf..."
 	@/bin/rm -f $(OBJECT)
@@ -54,7 +54,7 @@ clean:
 	@echo $(NC)
 
 fclean: clean
-	@make fclean -C headers/lib/libft/
+	@make fclean -C libs/libft/
 	@/bin/rm -f $(NAME)
 	@echo "stdio has been deleted! *sign*"
 
