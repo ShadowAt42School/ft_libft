@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2019/12/15 17:56:15 by maghayev         ###   ########.fr        #
+#    Updated: 2020/01/12 15:30:18 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC = gcc
 # CFLAGS = -Wall -Wextra -Werror -g
 CFLAGS = -g
 DEPS = headers/lib/ft_printf.h headers/lib/ft_stdio.h
-SRC  = $(wildcard ft_printf/*.c)
+SRC  = $(wildcard ft_printf/*.c ft_command_line/*.c)
 SRCH  = $(wildcard ft_printf/helpers/*.c)
 
 ROOTLIBS = libs/libft/libft.a

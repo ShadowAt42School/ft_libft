@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stdio.h                                         :+:      :+:    :+:   */
+/*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/25 21:05:30 by maghayev          #+#    #+#             */
-/*   Updated: 2020/01/12 15:29:46 by maghayev         ###   ########.fr       */
+/*   Created: 2020/01/16 22:41:24 by maghayev          #+#    #+#             */
+/*   Updated: 2020/01/16 22:41:43 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_STDIO_H
-# define FT_STDIO_H
+#include "../headers/ft_command_line.h"
 
-# include "../libs/libft/headers/libft.h"
-# include <stdarg.h>
-# include "ft_printf.h"
-# include "ft_command_line.h"
+void cl_parse_option_sh(char *params, t_option *options, size_t opts_count)
+{
+	size_t	counter;
+	size_t	checked_count;
 
-#endif
+	while (params)
+	{
+		counter = 0;
+		checked_count = 0;
+		while(counter < opts_count)
+		{
+			if (options[counter].shortc == *params)
+			{
+				if (options[counter].param.has_param)
+				options[counter].is_set = TRUE;
+			}
+			counter++;
+		}
+	}
+}
