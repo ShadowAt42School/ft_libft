@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/02 00:20:09 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/03 21:42:50 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,18 @@ char	**g_arguments = NULL;
 */
 void	cl_engine(char **args, t_option *options, size_t opts_count)
 {
+	if (opts_count == 0)
+		return ;
 	while (*args)
 	{
 		if (**args == '-' && **(args + 1) == '-' && **(args + 2) == '\0')
-			cl_engine_argument(++args);
+			cl_engine_argument(++args, opts_count);
 		else if (**args == '-' && **(args + 1) == '-' && **(args + 2) != '\0')
 			cl_engine_options_l(args, options, opts_count);
 		else if (**args == '-')
 			cl_engine_options_s(args, options, opts_count);
 		else
-			cl_engine_argument(args);
+			cl_engine_argument(args, opts_count);
 		args++;
 	}
 }
@@ -72,8 +74,11 @@ void	cl_engine_options_l(char **argums, t_option *opts, size_t optsc)
 	}
 }
 
-void	cl_engine_argument(char **argums)
+void	cl_engine_argument(char **argums, size_t opts_count)
 {
+	g_arguments = NULL;
+	if (opts_count == 0)
+		return ;
 	if (**argums == '-' && *(*argums + 1) == '-') {
 		argums++;
 	}

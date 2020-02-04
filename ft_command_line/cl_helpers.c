@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/02 00:26:45 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/03 21:47:31 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ char	*cl_get_argument()
 {
 	char	*argument;
 
+	if (!g_arguments)
+		return NULL;
 	argument = *g_arguments;
 	if (!argument)
 		return (NULL);
