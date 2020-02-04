@@ -1,21 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stdio.h                                         :+:      :+:    :+:   */
+/*   parsers.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/25 21:05:30 by maghayev          #+#    #+#             */
-/*   Updated: 2020/01/12 15:29:46 by maghayev         ###   ########.fr       */
+/*   Created: 2020/01/16 22:41:24 by maghayev          #+#    #+#             */
+/*   Updated: 2020/02/03 21:29:51 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_STDIO_H
-# define FT_STDIO_H
+#include "../headers/ft_command_line.h"
 
-# include "../libs/libft/headers/libft.h"
-# include <stdarg.h>
-# include "ft_printf.h"
-# include "ft_command_line.h"
+void	cl_parse_argum(t_option *opt)
+{
+	if (opt->is_set == FALSE)
+		opt->is_set = TRUE;
+	ft_bzero(&opt->param, sizeof(opt->param));
+}
 
-#endif
+void	cl_parse_argum_warg(t_option *opt, char *argm)
+{
+	if (opt->is_set == FALSE)
+		opt->is_set = TRUE;
+	opt->param.param = (void*)argm;
+}
