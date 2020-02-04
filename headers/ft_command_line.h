@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/03 21:44:58 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/03 22:47:30 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 # include "../libs/libft/libft.h"
 
 # define ERROR_NO_OPTION 404
-
-extern char			**g_arguments;
-
 
 typedef struct	s_option_param {
 	t_bool			has_param;
@@ -34,6 +31,10 @@ typedef struct	s_option {
 	t_bool			is_set;
 	t_option_param	param;
 }				t_option;
+
+extern t_option		*g_options;
+extern size_t		g_opts_count;
+extern char			**g_arguments;
 
 void			cl_engine(char **args, t_option *options, size_t opts_count);
 void			cl_engine_options_s(char **argums,
@@ -54,5 +55,6 @@ void			cl_parse_argum_warg(t_option *opt, char *argm);
 t_int			cl_find_sopt(char opt, t_option *opts, size_t optsc);
 t_int			cl_find_lopt(char *opt, t_option *opts, size_t optsc);
 char			*cl_get_argument();
+t_option		*cl_get_copt(char opt);
 
 #endif
