@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/03 22:52:23 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/04 22:01:43 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ t_option	*cl_get_copt(char opt)
 	if (!g_options)
 		return NULL;
 	option = cl_find_sopt(opt, g_options, g_opts_count);
-	if (option == -1)
+	if (option == -1 || (g_options + option)->is_set == FALSE)
 		return (NULL);
 	return (g_options + option);
 }
