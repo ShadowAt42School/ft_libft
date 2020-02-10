@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_stdio.h"
+#include "ft_printf.h"
 
 static unsigned int			specifier_conv_length(t_formater *fmt)
 {

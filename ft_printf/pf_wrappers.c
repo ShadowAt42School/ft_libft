@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_stdio.h"
+#include "ft_printf.h"
 
 static void	setup(const char *format, t_result *result)
 {

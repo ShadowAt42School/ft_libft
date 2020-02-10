@@ -6,16 +6,16 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2019/12/15 17:55:46 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/09 22:13:17 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
-# include "../libs/libft/libft.h"
 # include <stdarg.h>
 # include <stddef.h>
 # include <inttypes.h>
+# include "libft.h"
 
 /*
 **	Length

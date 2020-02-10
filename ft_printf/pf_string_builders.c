@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_stdio.h"
+#include "ft_printf.h"
 
 void			build_flags(
 	char **res,

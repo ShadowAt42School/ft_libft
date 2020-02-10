@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../headers/ft_printf.h"
+#include "ft_printf.h"
 
 t_bool	is_float(char x)
 {

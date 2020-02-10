@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   engine.c                                           :+:      :+:    :+:   */
+/*   pf_engine.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2019/12/13 22:54:24 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/09 22:53:42 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_stdio.h"
-#include <stdio.h>
+#include "ft_printf.h"
 
 void	ft_engine(va_list *ap, t_result *result)
 {
