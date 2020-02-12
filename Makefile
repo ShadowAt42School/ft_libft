@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2020/02/03 22:05:28 by maghayev         ###   ########.fr        #
+#    Updated: 2020/02/11 19:13:24 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,9 @@ OBJECT = $(SRC:.c=.o)
 	@echo "Finished building Dep. Libriaries"
 	@echo $(NC)
 
-%.o: %.c $(DEPS)
+%.o: %.c
 	@echo $(ORANGE)
-	$(CC) $(CFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ -c $<
 	@echo $(NC)
 
 all: $(NAME)
