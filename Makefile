@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2020/02/09 23:01:36 by maghayev         ###   ########.fr        #
+#    Updated: 2020/02/11 19:16:15 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,39 +17,50 @@ YELLOW = "\033[33m\c"
 UNDERLINE = "\033[4m\c"
 ORANGE = "\033[33m\c"
 NC="\033[0m\c"
+
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 SRC  = $(wildcard ft_printf/*.c ft_printf/helpers/*.c ft_command_line/*.c)
 LIBS = -Iheaders/ -Ilibs/libft/headers/
-LIBDEP = headers/ft_stdio.h
+
+DEPS = libft/
+
+EPD = headers/ft_printf.h
 
 OBJECT = $(SRC:.c=.o)
 
-deps: libftmake
-	@echo $(UNDERLINE)
-	@echo "Finished building Dep. Libriaries"
-	@echo $(NC)
-
-%.o: %.c $(LIBDEP)
+%.o: %.c $(EPD)
 	@echo $(ORANGE)
-	$(CC) $(CFLAGS) $(LIBS) -g -o $@ $<
+	$(CC) $(CFLAGS) $(LIBS) -g -o $@ -c $<
 	@echo $(NC)
 
 all: $(NAME)
 
-$(NAME): deps $(OBJECT)
-	@ar rc $@ libs/libft/modules/*/*.o $^
+$(NAME): | deps $(OBJECT)
+	@ar rc $@ libs/libft/modules/*/*.o $(OBJECT)
 	@ranlib $@
 	@echo $(GREEN)
 	@echo "Finished Building ft_stdio!"
 	@echo $(NC)
 
-libftmake:
-	@make objects -C libs/libft/
+objects: $(OBJECT)
+	@echo $(GREEN)
+	@echo "Finished Building ft_stdio objects!"
 	@echo $(NC)
 
-clean:
-	@make clean -C libs/libft/
+deps: makedep
+	@echo $(UNDERLINE)
+	@echo "Finished building Dep. Libriaries"
+	@echo $(NC)
+
+makedep: libs/$(DEPS)
+	@make objects -C $<
+	@echo $(NC)
+
+cleandep: libs/$(DEPS)
+	@make clean -C $<
+
+clean: cleandep
 	@echo $(YELLOW)
 	@echo "ft_stdio clean started"
 	@/bin/rm -f $(OBJECT)
