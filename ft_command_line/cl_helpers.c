@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_command_line.h"
+#include "ft_command_line.h"
 
 t_int		cl_find_sopt(char opt, t_option *opts, size_t optsc)
 {

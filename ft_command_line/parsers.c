@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_command_line.h"
+#include "ft_command_line.h"
 
 void	cl_parse_argum(t_option *opt)
 {

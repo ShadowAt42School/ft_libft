@@ -6,13 +6,13 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/03 22:47:30 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 19:17:50 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_COMMAND_LINE_H
 # define FT_COMMAND_LINE_H
-# include "../libs/libft/libft.h"
+# include "libft.h"
 
 # define ERROR_NO_OPTION 404
 

@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../headers/ft_command_line.h"
+#include "ft_command_line.h"
 
 t_option	*g_options = NULL;
 size_t		g_opts_count = 0;
