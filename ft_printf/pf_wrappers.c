@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wrappers.c                                         :+:      :+:    :+:   */
+/*   pf_wrappers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 18:40:53 by maghayev          #+#    #+#             */
-/*   Updated: 2019/11/25 20:33:23 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:26:44 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	setup(const char *format, t_result *result)
+static void	pf_setup(const char *format, t_result *result)
 {
 	ft_bzero(result, sizeof(t_result));
 	result->format = format;
@@ -25,9 +25,9 @@ int			ft_printf(const char *format, ...)
 	t_result	result;
 
 	ft_bzero(&result, sizeof(result));
-	setup(format, &result);
+	pf_setup(format, &result);
 	va_start(ap, format);
-	ft_engine(&ap, &result);
+	pf_engine(&ap, &result);
 	va_end(ap);
 	write(1, result.print, result.length_print);
 	ft_strdel(&result.print);

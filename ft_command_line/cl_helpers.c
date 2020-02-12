@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/04 22:01:43 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:37:32 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ t_int		cl_find_lopt(char *opt, t_option *opts, size_t optsc)
 	return (-1);
 }
 
-char		*cl_get_argument()
+char		*cl_get_argument(void)
 {
 	char	*argument;
 
 	if (!g_arguments)
-		return NULL;
+		return (NULL);
 	argument = *g_arguments;
 	if (!argument)
 		return (NULL);
@@ -58,7 +58,7 @@ t_option	*cl_get_copt(char opt)
 	int		option;
 
 	if (!g_options)
-		return NULL;
+		return (NULL);
 	option = cl_find_sopt(opt, g_options, g_opts_count);
 	if (option == -1 || (g_options + option)->is_set == FALSE)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/11 18:57:08 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:22:47 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,38 +117,38 @@ int					ft_printf(const char *format, ...);
 /*
 **	Engine
 */
-void				ft_engine(va_list *ap, t_result *result);
-t_list				*parse_format(va_list *ap, const char **format_origin);
-t_list				*build_format(t_formater *formater);
-void				finalize(t_result *result, t_list *pieces);
+void				pf_engine(va_list *ap, t_result *result);
+t_list				*pf_parse_format(va_list *ap, const char **format_origin);
+t_list				*pf_build_format(t_formater *formater);
+void				pf_finalize(t_result *result, t_list *pieces);
 
 /*
 **	Format Parsers
 */
-void				parse_flags(
+void				pf_parse_flags(
 						const char **format, t_formater *formater, void *ap);
-void				parse_width_precision(
+void				pf_parse_width_precision(
 						const char **format, t_formater *formater, va_list *ap);
-void				parse_length(
+void				pf_parse_length(
 						const char **format, t_formater *formater, void *ap);
-void				parse_specifier(
+void				pf_parse_specifier(
 						const char **format, t_formater *formater, va_list *ap);
-void				build_decorators(t_formater *formater);
+void				pf_build_decorators(t_formater *formater);
 
 /*
 **	Format Result Length
 */
-void				prepare_length(
+void				pf_prepare_length(
 								unsigned int *current_length, t_formater *form);
 
 /*
 **	Format String Builders
 */
-void				build_flags(
+void				pf_build_flags(
 						char **res, t_formater *fmt, unsigned int str_start);
-void				build_precision(
+void				pf_build_precision(
 						char **res, t_formater *fmt, unsigned int str_start);
-void				build_specifier(
+void				pf_build_specifier(
 						char **res, t_formater *fmt, unsigned int str_start);
 
 /*
@@ -158,48 +158,48 @@ void				build_specifier(
 /*
 **	Format checks
 */
-t_bool				is_comp(char x);
-t_bool				is_flag(char x);
-t_bool				is_widpre(char x);
-t_bool				is_len(char x);
-t_bool				is_spec(char x);
+t_bool				pf_is_comp(char x);
+t_bool				pf_is_flag(char x);
+t_bool				pf_is_widpre(char x);
+t_bool				pf_is_len(char x);
+t_bool				pf_is_spec(char x);
 
 /*
 **	Specifier check
 */
-t_bool				is_float(char x);
-t_bool				is_int(char x);
-t_bool				is_sint(char x);
-t_bool				is_uint(char x);
-t_bool				is_uints(char x);
-t_bool				is_pointer(char x);
-t_bool				is_strs(char x);
-t_bool				is_str(char x);
-t_bool				is_char(char x);
+t_bool				pf_is_float(char x);
+t_bool				pf_is_int(char x);
+t_bool				pf_is_sint(char x);
+t_bool				pf_is_uint(char x);
+t_bool				pf_is_uints(char x);
+t_bool				pf_is_pointer(char x);
+t_bool				pf_is_strs(char x);
+t_bool				pf_is_str(char x);
+t_bool				pf_is_char(char x);
 
 /*
 **	Flag checks
 */
-t_bool				is_fsp(unsigned char x);
-t_bool				is_fsm(unsigned char x);
-t_bool				is_fspc(unsigned char x);
-t_bool				is_fhs(unsigned char x);
-t_bool				is_fzero(unsigned char x);
+t_bool				pf_is_fsp(unsigned char x);
+t_bool				pf_is_fsm(unsigned char x);
+t_bool				pf_is_fspc(unsigned char x);
+t_bool				pf_is_fhs(unsigned char x);
+t_bool				pf_is_fzero(unsigned char x);
 
 /*
 **	Base checks
 */
-t_bool				is_base10(char x);
-t_bool				is_basen10(char x);
-int					base(char x);
-int					basen10(char x);
+t_bool				pf_is_base10(char x);
+t_bool				pf_is_basen10(char x);
+int					pf_base(char x);
+int					pf_basen10(char x);
 
 /*
 **	Aux
 */
-int					flhslen(char x);
-char				*flhsstr(char x);
-char				*flhsstrx(char x);
-t_bool				caplen(char x);
+int					pf_flhslen(char x);
+char				*pf_flhsstr(char x);
+char				*pf_flhsstrx(char x);
+t_bool				pf_caplen(char x);
 
 #endif

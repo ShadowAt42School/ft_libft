@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/11 19:17:50 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:31:34 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void			cl_engine_options_s(char **argums,
 												t_option *opts, size_t optsc);
 void			cl_engine_options_l(char **argums,
 												t_option *opts, size_t optsc);
-void			cl_engine_argument(char **argums, size_t);
+void			cl_engine_argument(char **argums, size_t count);
 
 /*
 **	Parsers

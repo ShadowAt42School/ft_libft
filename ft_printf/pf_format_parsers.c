@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   format_parsers.c                                   :+:      :+:    :+:   */
+/*   pf_format_parsers.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 17:50:16 by maghayev          #+#    #+#             */
-/*   Updated: 2019/12/13 22:57:17 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:36:43 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	parse_flags(
+void	pf_parse_flags(
 	const char **format,
 	t_formater *formater,
 	void *ap
 )
 {
-	while (is_flag(**format) && ap)
+	while (pf_is_flag(**format) && ap)
 	{
 		if (**format == '+')
 			formater->flags = formater->flags | 1;
 		else if (**format == '-')
 			formater->flags = formater->flags | 2;
-		else if (**format == ' ' && !is_fsp(formater->flags))
+		else if (**format == ' ' && !pf_is_fsp(formater->flags))
 			formater->flags = formater->flags | 4;
 		else if (**format == '#')
 			formater->flags = formater->flags | 8;
-		else if (**format == '0' && !is_fsm(formater->flags))
+		else if (**format == '0' && !pf_is_fsm(formater->flags))
 			formater->flags = formater->flags | 16;
 		(*format)++;
 	}
 }
 
-void	parse_width_precision(
+void	pf_parse_width_precision(
 	const char **format,
 	t_formater *formater,
 	va_list *ap
@@ -67,13 +67,13 @@ void	parse_width_precision(
 		ft_strnumlen_inplace(format);
 }
 
-void	parse_length(
+void	pf_parse_length(
 	const char **format,
 	t_formater *formater,
 	void *ap
 )
 {
-	while (is_len(**format) && ap)
+	while (pf_is_len(**format) && ap)
 	{
 		if (**format == 'h' && formater->length < HH)
 			formater->length = *(*format + 1) == 'h' ? HH : H;
@@ -91,7 +91,7 @@ void	parse_length(
 	}
 }
 
-void	parse_specifier(
+void	pf_parse_specifier(
 	const char **format,
 	t_formater *formater,
 	va_list *ap
@@ -100,9 +100,9 @@ void	parse_specifier(
 	if (!**format)
 		return ;
 	formater->specifier = **format;
-	if (is_spec(**format))
+	if (pf_is_spec(**format))
 	{
-		if (is_float(**format))
+		if (pf_is_float(**format))
 		{
 			if (formater->length == LF)
 				formater->value.ldnumber = va_arg(*ap, long double);
@@ -111,31 +111,31 @@ void	parse_specifier(
 		}
 		else
 			formater->value.pspec = va_arg(*ap, void*);
-		if (!formater->value.pspec && is_str(formater->specifier))
+		if (!formater->value.pspec && pf_is_str(formater->specifier))
 			formater->value.pspec = (void *)"(null)";
 	}
 	(*format)++;
 }
 
-void	build_decorators(t_formater *fmt)
+void	pf_build_decorators(t_formater *fmt)
 {
 	if (ft_isupper(fmt->specifier))
 	{
-		if (fmt->length < L && fmt->length != LF && caplen(fmt->specifier))
+		if (fmt->length < L && fmt->length != LF && pf_caplen(fmt->specifier))
 			fmt->length = L;
 		fmt->decorators.is_capital = TRUE;
 	}
-	fmt->decorators.is_force_sign = is_fsp(fmt->flags) &&
-						(is_sint(fmt->specifier) || is_float(fmt->specifier));
-	fmt->decorators.is_ljustify = is_fsm(fmt->flags);
-	fmt->decorators.is_blank_space = is_fspc(fmt->flags) &&
-						(is_sint(fmt->specifier) || is_float(fmt->specifier));
-	fmt->decorators.is_preceed_ox = is_fhs(fmt->flags) &&
-						(is_uints(fmt->specifier) || is_float(fmt->specifier));
-	fmt->decorators.is_force_decimal = (is_fhs(fmt->flags) &&
-													is_float(fmt->specifier));
-	if ((is_fzero(fmt->flags) && !is_fsm(fmt->flags)) ||
-		(is_int(fmt->specifier) && fmt->decorators.is_precision))
+	fmt->decorators.is_force_sign = pf_is_fsp(fmt->flags) &&
+					(pf_is_sint(fmt->specifier) || pf_is_float(fmt->specifier));
+	fmt->decorators.is_ljustify = pf_is_fsm(fmt->flags);
+	fmt->decorators.is_blank_space = pf_is_fspc(fmt->flags) &&
+					(pf_is_sint(fmt->specifier) || pf_is_float(fmt->specifier));
+	fmt->decorators.is_preceed_ox = pf_is_fhs(fmt->flags) &&
+				(pf_is_uints(fmt->specifier) || pf_is_float(fmt->specifier));
+	fmt->decorators.is_force_decimal = (pf_is_fhs(fmt->flags) &&
+												pf_is_float(fmt->specifier));
+	if ((pf_is_fzero(fmt->flags) && !pf_is_fsm(fmt->flags)) ||
+		(pf_is_int(fmt->specifier) && fmt->decorators.is_precision))
 		fmt->decorators.is_pad_zeros = TRUE;
 	if (fmt->specifier == 'p' && (fmt->length = 4))
 		fmt->decorators.is_preceed_ox = TRUE;

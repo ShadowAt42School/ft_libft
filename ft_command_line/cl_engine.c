@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/03 22:57:28 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/11 22:39:37 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ char		**g_arguments = NULL;
 ** t_option	options[5];
 ** options[0] = (t_option){.shortc = 'c', .longc = "adasd"};
 */
+
 void	cl_engine(char **args, t_option *options, size_t opts_count)
 {
 	if (opts_count == 0)
@@ -33,7 +34,8 @@ void	cl_engine(char **args, t_option *options, size_t opts_count)
 			cl_engine_options_l(args, options, opts_count);
 		else if (**args == '-')
 			cl_engine_options_s(args, options, opts_count);
-		else {
+		else
+		{
 			cl_engine_argument(args, opts_count);
 			break ;
 		}
@@ -85,8 +87,7 @@ void	cl_engine_argument(char **argums, size_t opts_count)
 	g_arguments = NULL;
 	if (opts_count == 0)
 		return ;
-	if (**argums == '-' && *(*argums + 1) == '-') {
+	if (**argums == '-' && *(*argums + 1) == '-')
 		argums++;
-	}
 	g_arguments = argums;
 }
