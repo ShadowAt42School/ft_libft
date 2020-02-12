@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2020/02/11 19:19:58 by maghayev         ###   ########.fr        #
+#    Updated: 2020/02/11 22:07:40 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ $(NAME): | deps $(OBJECT)
 	@echo "Finished Building ft_stdio!"
 	@echo $(NC)
 
-objects: $(OBJECT)
+objects: | deps $(OBJECT)
 	@echo $(GREEN)
 	@echo "Finished Building ft_stdio objects!"
 	@echo $(NC)
