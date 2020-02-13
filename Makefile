@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2020/02/11 22:43:01 by maghayev         ###   ########.fr        #
+#    Updated: 2020/02/12 21:34:06 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ LIBS = -Iheaders/ -Ilibs/libft/headers/
 
 DEPS = libft/
 
-OBJECT = $(SRC:.c=.o)
+EPD = headers/ft_printf.h
 
 %.o: %.c
 	@echo $(ORANGE)
