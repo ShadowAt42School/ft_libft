@@ -6,15 +6,11 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/11 22:39:37 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/12 21:21:40 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_command_line.h"
-
-t_option	*g_options = NULL;
-size_t		g_opts_count = 0;
-char		**g_arguments = NULL;
 
 /*
 ** t_option	options[5];
@@ -25,7 +21,7 @@ void	cl_engine(char **args, t_option *options, size_t opts_count)
 {
 	if (opts_count == 0)
 		return ;
-	g_opts_count = opts_count;
+	cl_set_args_count(opts_count);
 	while (*args)
 	{
 		if (**args == '-' && *(*args + 1) == '-' && *(*args + 2) == '\0')
@@ -41,7 +37,7 @@ void	cl_engine(char **args, t_option *options, size_t opts_count)
 		}
 		args++;
 	}
-	g_options = options;
+	cl_set_opt(options);
 }
 
 void	cl_engine_options_s(char **argums, t_option *opts, size_t optsc)
@@ -84,10 +80,9 @@ void	cl_engine_options_l(char **argums, t_option *opts, size_t optsc)
 
 void	cl_engine_argument(char **argums, size_t opts_count)
 {
-	g_arguments = NULL;
 	if (opts_count == 0)
 		return ;
 	if (**argums == '-' && *(*argums + 1) == '-')
 		argums++;
-	g_arguments = argums;
+	cl_set_arguments(argums);
 }

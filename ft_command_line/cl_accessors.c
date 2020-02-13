@@ -1,44 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_helpers.c                                       :+:      :+:    :+:   */
+/*   cl_accessors.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/11 22:37:32 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/12 21:23:06 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_command_line.h"
 
-t_int		cl_find_sopt(char opt, t_option *opts, size_t optsc)
-{
-	size_t	counter;
-
-	counter = 0;
-	while (counter < optsc)
-	{
-		if (opt == opts[counter].shortc)
-			return (counter);
-		counter++;
-	}
-	return (-1);
-}
-
-t_int		cl_find_lopt(char *opt, t_option *opts, size_t optsc)
-{
-	size_t	counter;
-
-	counter = 0;
-	while (counter < optsc)
-	{
-		if (ft_strcmp(opt, opts[counter].longc))
-			return (counter);
-		counter++;
-	}
-	return (-1);
-}
+size_t				g_opts_count = 0;
+static char			**g_arguments;
+static t_option		*g_options = NULL;
 
 char		*cl_get_argument(void)
 {
@@ -51,6 +27,21 @@ char		*cl_get_argument(void)
 		return (NULL);
 	g_arguments++;
 	return (argument);
+}
+
+void		cl_set_opt(t_option *opts)
+{
+	g_options = opts;
+}
+
+void		cl_set_args_count(size_t args_count)
+{
+	g_opts_count = args_count;
+}
+
+void		cl_set_arguments(char **args)
+{
+	g_arguments = args;
 }
 
 t_option	*cl_get_copt(char opt)
