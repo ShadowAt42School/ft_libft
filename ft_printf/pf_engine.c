@@ -6,13 +6,13 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/11 19:09:16 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/12 21:34:17 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	ft_engine(va_list *ap, t_result *result)
+void	pf_engine(va_list *ap, t_result *result)
 {
 	t_list	*pieces;
 	char	*clean_str;
@@ -26,36 +26,36 @@ void	ft_engine(va_list *ap, t_result *result)
 			result->format++;
 			if (!*result->format)
 				break ;
-			ft_lstaddend(&pieces, parse_format(ap, &result->format));
+			ft_lstaddend(&pieces, pf_parse_format(ap, &result->format));
 			continue;
 		}
 		clean_str_len = ft_strdelim(&clean_str, result->format, '%');
 		ft_lstaddend(&pieces, ft_lstnewp(clean_str, clean_str_len));
 		result->format += clean_str_len;
 	}
-	finalize(result, pieces);
+	pf_finalize(result, pieces);
 }
 
-t_list	*parse_format(va_list *ap, const char **format_origin)
+t_list	*pf_parse_format(va_list *ap, const char **format_origin)
 {
 	t_formater	formatter;
 
 	ft_bzero(&formatter, sizeof(t_formater));
-	while (!is_spec(**format_origin) && is_comp(**format_origin))
+	while (!pf_is_spec(**format_origin) && pf_is_comp(**format_origin))
 	{
-		if (is_flag(**format_origin))
-			parse_flags(format_origin, &formatter, ap);
-		if (is_widpre(**format_origin))
-			parse_width_precision(format_origin, &formatter, ap);
-		if (is_len(**format_origin))
-			parse_length(format_origin, &formatter, ap);
+		if (pf_is_flag(**format_origin))
+			pf_parse_flags(format_origin, &formatter, ap);
+		if (pf_is_widpre(**format_origin))
+			pf_parse_width_precision(format_origin, &formatter, ap);
+		if (pf_is_len(**format_origin))
+			pf_parse_length(format_origin, &formatter, ap);
 	}
-	parse_specifier(format_origin, &formatter, ap);
-	build_decorators(&formatter);
-	return (build_format(&formatter));
+	pf_parse_specifier(format_origin, &formatter, ap);
+	pf_build_decorators(&formatter);
+	return (pf_build_format(&formatter));
 }
 
-t_list	*build_format(t_formater *fmt)
+t_list	*pf_build_format(t_formater *fmt)
 {
 	char			*result;
 	unsigned int	total_length;
@@ -63,24 +63,24 @@ t_list	*build_format(t_formater *fmt)
 	total_length = 0;
 	if (fmt->specifier)
 	{
-		prepare_length(&total_length, fmt);
+		pf_prepare_length(&total_length, fmt);
 		result = ft_strnew(total_length);
 		if (fmt->width > 0)
 			ft_memset(result, fmt->decorators.is_pad_zeros &&
 					!fmt->decorators.is_precision ? '0' : ' ', total_length);
 		if (fmt->decorators.is_precision)
-			build_precision(&result, fmt, fmt->decorators.is_ljustify
+			pf_build_precision(&result, fmt, fmt->decorators.is_ljustify
 						? fmt->len.aux : total_length - fmt->len.processed);
-		build_specifier(&result, fmt, fmt->decorators.is_ljustify ?
+		pf_build_specifier(&result, fmt, fmt->decorators.is_ljustify ?
 					(fmt->len.processed - fmt->len.value + fmt->len.aux) :
 												total_length - fmt->len.value);
-		build_flags(&result, fmt, fmt->decorators.is_ljustify ? 0
+		pf_build_flags(&result, fmt, fmt->decorators.is_ljustify ? 0
 						: total_length - fmt->len.processed - fmt->len.aux);
 	}
 	return (ft_lstnewp(result, total_length));
 }
 
-void	finalize(t_result *result, t_list *pieces)
+void	pf_finalize(t_result *result, t_list *pieces)
 {
 	t_list			*pstart;
 	t_list			*poped;
