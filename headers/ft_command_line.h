@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 20:17:48 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/17 21:21:40 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,4 @@ char			*cl_get_argument();
 */
 t_int			cl_find_sopt(char opt, t_option *opts, size_t optsc);
 t_int			cl_find_lopt(char *opt, t_option *opts, size_t optsc);
-
-
 #endif
