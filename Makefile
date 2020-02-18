@@ -6,7 +6,7 @@
 #    By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/27 21:42:08 by maghayev          #+#    #+#              #
-#    Updated: 2020/02/12 21:43:07 by maghayev         ###   ########.fr        #
+#    Updated: 2020/02/17 21:11:16 by maghayev         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ NC="\033[0m\c"
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-SRC  = $(wildcard ft_printf/*.c ft_printf/helpers/*.c ft_command_line/*.c)
+SRC  = $(wildcard ft_printf/*.c ft_printf/helpers/*.c ft_command_line/*.c ft_command_line/cl_accessors/*.c)
 LIBS = -Iheaders/ -Ilibs/libft/headers/
 
 DEPS = libft/

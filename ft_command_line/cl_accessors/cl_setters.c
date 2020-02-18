@@ -1,19 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_main.c                                          :+:      :+:    :+:   */
+/*   cl_setters.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/17 19:36:19 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 20:32:44 by maghayev         ###   ########.fr       */
+/*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
+/*   Updated: 2020/02/17 20:46:24 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_command_line.h"
+#include "./cl_accessors.h"
 
-void	cl_init(char **args, t_option *options, size_t size)
+size_t		g_opts_count = 0;
+char		**g_arguments = NULL;
+t_option	*g_options = NULL;
+
+void		cl_set_opts(t_option *opts, size_t opts_count)
 {
-	cl_set_opts(options, size);
-	cl_engine(args);
+	g_options = opts;
+	cl_set_opts_count(opts_count);
+}
+
+void		cl_set_opts_count(size_t opts_count)
+{
+	g_opts_count = opts_count;
+}
+
+void		cl_set_arguments(char **args)
+{
+	g_arguments = args;
 }

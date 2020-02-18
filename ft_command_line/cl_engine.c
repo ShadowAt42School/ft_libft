@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 19:52:23 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/17 21:10:27 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,26 +17,31 @@
 ** options[0] = (t_option){.shortc = 'c', .longc = "adasd"};
 */
 
-void	cl_engine(char **args, t_option *options, size_t opts_count)
+void	cl_engine(char **args)
 {
+	size_t	opts_count;
+
+	opts_count = cl_get_opts_count();
 	if (opts_count == 0)
 		return ;
 	while (*args)
 	{
 		if (**args == '-' && *(*args + 1) == '-' && *(*args + 2) == '\0')
-			cl_engine_argument(++args, opts_count);
+		{
+			cl_engine_argument(++args);
+			break;
+		}
 		else if (**args == '-' && *(*args + 1) == '-' && *(*args + 2) != '\0')
-			cl_engine_options_l(args, options, opts_count);
+			cl_engine_options_l(args, cl_get_raw_options(), opts_count);
 		else if (**args == '-')
-			cl_engine_options_s(args, options, opts_count);
+			cl_engine_options_s(args, cl_get_raw_options(), opts_count);
 		else
 		{
-			cl_engine_argument(args, opts_count);
+			cl_engine_argument(args);
 			break ;
 		}
 		args++;
 	}
-	cl_set_opts(options, opts_count);
 }
 
 void	cl_engine_options_s(char **argums, t_option *opts, size_t optsc)
@@ -77,11 +82,9 @@ void	cl_engine_options_l(char **argums, t_option *opts, size_t optsc)
 	}
 }
 
-void	cl_engine_argument(char **argums, size_t opts_count)
+void	cl_engine_argument(char **argums)
 {
-	if (opts_count == 0)
+	if (!argums || !*argums)
 		return ;
-	if (**argums == '-' && *(*argums + 1) == '-')
-		argums++;
 	cl_set_arguments(argums);
 }
