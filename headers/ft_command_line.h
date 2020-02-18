@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/12 21:34:21 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/17 19:52:15 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,9 @@ void			cl_parse_argum_warg(t_option *opt, char *argm);
 */
 t_int			cl_find_sopt(char opt, t_option *opts, size_t optsc);
 t_int			cl_find_lopt(char *opt, t_option *opts, size_t optsc);
-void			cl_set_args_count(size_t args_count);
 void			cl_set_arguments(char **args);
 char			*cl_get_argument();
-void			cl_set_opt(t_option *opts);
-t_option		*cl_get_copt(char opt);
+void			cl_set_opts(t_option *opts, size_t opts_count);
+t_option		*cl_get_sopt(char opt);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/12 21:34:08 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/17 19:52:23 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	cl_engine(char **args, t_option *options, size_t opts_count)
 {
 	if (opts_count == 0)
 		return ;
-	cl_set_args_count(opts_count);
 	while (*args)
 	{
 		if (**args == '-' && *(*args + 1) == '-' && *(*args + 2) == '\0')
@@ -37,7 +36,7 @@ void	cl_engine(char **args, t_option *options, size_t opts_count)
 		}
 		args++;
 	}
-	cl_set_opt(options);
+	cl_set_opts(options, opts_count);
 }
 
 void	cl_engine_options_s(char **argums, t_option *opts, size_t optsc)
