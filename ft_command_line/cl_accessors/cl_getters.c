@@ -6,11 +6,15 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 20:43:29 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/18 22:07:10 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./cl_accessors.h"
+
+size_t		g_opts_count;
+char		**g_arguments;
+t_option	*g_options;
 
 size_t		cl_get_opts_count(void)
 {

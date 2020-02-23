@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 21:21:40 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/22 21:35:54 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct	s_option {
 	t_bool			mandatory;
 	t_bool			is_set;
 	t_option_param	param;
+	t_uint			order;
 }				t_option;
 
 void			cl_init(char **args, t_option *options, size_t size);
