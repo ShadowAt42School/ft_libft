@@ -1,1 +1,2 @@
 1) Support for multi variable options
+2) Make search for options faster

@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/12 21:33:33 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/02/27 23:48:39 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ typedef	struct		s_result
 **	Wrappers: ft_printf, ft_sprintf
 */
 int					ft_printf(const char *format, ...);
+int					ft_sprintf(char *buf, const char *format, ...);
 
 /*
 **	Engine
