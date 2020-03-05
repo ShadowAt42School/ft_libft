@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 18:40:53 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/28 00:30:41 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/04 21:22:44 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int			ft_sprintf(char *buf, const char *format, ...)
 	va_start(ap, format);
 	pf_engine(&ap, &result);
 	va_end(ap);
-	buf = result.print;
+	ft_memcpy(buf, result.print, result.length_print);
+	ft_strdel(&result.print);
 	return (result.length_print);
 }
 
