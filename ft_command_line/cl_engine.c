@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 21:20:20 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/10 22:10:08 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,9 @@ void	cl_engine_argument(char **argums)
 	if (!argums || !*argums)
 		return ;
 	cl_set_arguments(argums);
+}
+
+void	cl_sort_arguments(t_bool (*comp)(void *, void *))
+{
+	ft_string_bubble_sort(cl_get_raw_arguments(), cl_get_argums_count(), comp);
 }

@@ -1,53 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cl_getters.c                                       :+:      :+:    :+:   */
+/*   cl_getters_arguments.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/18 22:07:10 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/10 21:56:05 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./cl_accessors.h"
 
-size_t		g_opts_count;
+size_t		g_argums_count;
 char		**g_arguments;
-t_option	*g_options;
 
-size_t		cl_get_opts_count(void)
+size_t		cl_get_argums_count(void)
 {
-	return (g_opts_count);
+	return (g_argums_count);
 }
 
-t_option	*cl_get_raw_options(void)
+char		**cl_get_raw_arguments(void)
 {
-	return (g_options);
-}
-
-t_option	*cl_get_sopt(char opt)
-{
-	int		option;
-
-	if (!g_options)
-		return (NULL);
-	option = cl_find_sopt(opt, g_options, g_opts_count);
-	if (option == -1 || (g_options + option)->is_set == FALSE)
-		return (NULL);
-	return (g_options + option);
-}
-
-t_option	*cl_get_lopt(char *opt)
-{
-	int		option;
-
-	if (!g_options)
-		return (NULL);
-	option = cl_find_lopt(opt, g_options, g_opts_count);
-	if (option == -1 || (g_options + option)->is_set == FALSE)
-		return (NULL);
-	return (g_options + option);
+	return (g_arguments);
 }
 
 char		*cl_get_argument(void)

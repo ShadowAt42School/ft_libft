@@ -4,3 +4,4 @@ main.c
 a.out.dSYM/
 a.out
 *.o
+test_*

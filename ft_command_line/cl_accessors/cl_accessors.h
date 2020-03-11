@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/17 20:10:21 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/17 21:20:34 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/10 21:55:47 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include "ft_command_line.h"
 
 extern size_t	g_opts_count;
+extern size_t	g_argums_count;
 extern char		**g_arguments;
 extern t_option	*g_options;
 
