@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/03/10 22:01:29 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/10 23:29:55 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,9 @@ t_option		*cl_get_sopt(char opt);
 t_option		*cl_get_lopt(char *opt);
 
 size_t			cl_get_argums_count(void);
-char			**cl_get_raw_arguments(void);
+char			***cl_get_raw_arguments(void);
 char			*cl_get_argument();
-void			cl_sort_arguments(t_bool (comp)(void *, void *));
+void			cl_sort_arguments(t_bool (comp)(char *, char *));
 /*
 **	Helper Functions
 */

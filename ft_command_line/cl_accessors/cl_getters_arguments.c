@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 21:43:09 by maghayev          #+#    #+#             */
-/*   Updated: 2020/03/10 21:56:05 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/10 23:29:57 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ size_t		cl_get_argums_count(void)
 	return (g_argums_count);
 }
 
-char		**cl_get_raw_arguments(void)
+char		***cl_get_raw_arguments(void)
 {
-	return (g_arguments);
+	return (&g_arguments);
 }
 
 char		*cl_get_argument(void)
