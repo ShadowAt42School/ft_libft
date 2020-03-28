@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/28 00:30:55 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/25 21:59:41 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ int					ft_pprintf(char **buf, const char *format, ...);
 void				pf_engine(va_list *ap, t_result *result);
 t_list				*pf_parse_format(va_list *ap, const char **format_origin);
 t_list				*pf_build_format(t_formater *formater);
-void				pf_finalize(t_result *result, t_list *pieces);
 
 /*
 **	Format Parsers

@@ -6,13 +6,42 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:02:29 by maghayev          #+#    #+#             */
-/*   Updated: 2020/02/12 21:34:17 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/27 17:21:13 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	pf_engine(va_list *ap, t_result *result)
+static void	pf_finalize(t_result *result, t_list *pieces)
+{
+	t_list			*pstart;
+	t_list			*poped;
+	unsigned int	cur_len;
+
+	cur_len = 0;
+	pstart = pieces;
+	while (pstart)
+	{
+		result->length_print += pstart->content_size;
+		pstart = pstart->next;
+	}
+	result->print = ft_strnew(result->length_print);
+	pstart = pieces;
+	while ((poped = pstart))
+	{
+		pstart = pstart->next;
+		if (poped->content_size != 0)
+		{
+			ft_memcpy(result->print + cur_len,
+										poped->content, poped->content_size);
+			cur_len += poped->content_size;
+		}
+		ft_strdel((char**)(&poped->content));
+		ft_memdel((void**)(&poped));
+	}
+}
+
+void		pf_engine(va_list *ap, t_result *result)
 {
 	t_list	*pieces;
 	char	*clean_str;
@@ -36,7 +65,7 @@ void	pf_engine(va_list *ap, t_result *result)
 	pf_finalize(result, pieces);
 }
 
-t_list	*pf_parse_format(va_list *ap, const char **format_origin)
+t_list		*pf_parse_format(va_list *ap, const char **format_origin)
 {
 	t_formater	formatter;
 
@@ -55,7 +84,7 @@ t_list	*pf_parse_format(va_list *ap, const char **format_origin)
 	return (pf_build_format(&formatter));
 }
 
-t_list	*pf_build_format(t_formater *fmt)
+t_list		*pf_build_format(t_formater *fmt)
 {
 	char			*result;
 	unsigned int	total_length;
@@ -78,33 +107,4 @@ t_list	*pf_build_format(t_formater *fmt)
 						: total_length - fmt->len.processed - fmt->len.aux);
 	}
 	return (ft_lstnewp(result, total_length));
-}
-
-void	pf_finalize(t_result *result, t_list *pieces)
-{
-	t_list			*pstart;
-	t_list			*poped;
-	unsigned int	cur_len;
-
-	cur_len = 0;
-	pstart = pieces;
-	while (pstart)
-	{
-		result->length_print += pstart->content_size;
-		pstart = pstart->next;
-	}
-	result->print = ft_strnew(result->length_print);
-	pstart = pieces;
-	while (pstart && (poped = pstart))
-	{
-		if (poped->content_size != 0)
-		{
-			ft_memcpy(result->print + cur_len,
-										poped->content, poped->content_size);
-			cur_len += poped->content_size;
-			free(poped->content);
-			free(poped);
-		}
-		pstart = pstart->next;
-	}
 }
