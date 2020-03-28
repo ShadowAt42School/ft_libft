@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 18:40:53 by maghayev          #+#    #+#             */
-/*   Updated: 2020/03/04 21:22:44 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/27 22:04:24 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,24 @@ int			ft_pprintf(char **buf, const char *format, ...)
 	pf_engine(&ap, &result);
 	va_end(ap);
 	*buf = result.print;
+	return (result.length_print);
+}
+
+int			ft_fdprintf(ssize_t fd, const char *format, ...)
+{
+	va_list		ap;
+	t_result	result;
+
+	ft_bzero(&result, sizeof(result));
+	pf_setup(format, &result);
+	va_start(ap, format);
+	pf_engine(&ap, &result);
+	va_end(ap);
+	if (write(fd, result.print, result.length_print) == -1)
+	{
+		perror("ft_fdprintf: ");
+		exit(EXIT_FAILURE);
+	}
+	ft_strdel(&result.print);
 	return (result.length_print);
 }

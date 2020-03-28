@@ -6,7 +6,7 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/25 22:06:21 by maghayev          #+#    #+#             */
-/*   Updated: 2020/03/25 21:59:41 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/27 22:04:36 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 # include <stdarg.h>
 # include <stddef.h>
 # include <inttypes.h>
+# include <stdio.h>
 # include "libft.h"
 
 /*
@@ -115,6 +116,7 @@ typedef	struct		s_result
 int					ft_printf(const char *format, ...);
 int					ft_sprintf(char *buf, const char *format, ...);
 int					ft_pprintf(char **buf, const char *format, ...);
+int					ft_fdprintf(ssize_t fd, const char *format, ...);
 
 /*
 **	Engine

@@ -6,16 +6,17 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:10:40 by maghayev          #+#    #+#             */
-/*   Updated: 2020/03/10 23:29:55 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/27 22:06:04 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_COMMAND_LINE_H
 # define FT_COMMAND_LINE_H
+# include <stdio.h>
 # include "libft.h"
+# include "ft_printf.h"
 
-# define ERROR_PARSING_ERROR 500
-# define ERROR_NO_OPTION 404
+extern char		*g_prog_name;
 
 typedef struct	s_option_param {
 	t_bool			has_param;

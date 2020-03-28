@@ -6,11 +6,13 @@
 /*   By: maghayev <maghayev@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/12 15:12:34 by maghayev          #+#    #+#             */
-/*   Updated: 2020/03/10 23:29:59 by maghayev         ###   ########.fr       */
+/*   Updated: 2020/03/27 22:05:52 by maghayev         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_command_line.h"
+
+extern char		*g_prog_name;
 
 /*
 ** t_option	options[5];
@@ -54,7 +56,11 @@ void	cl_engine_options_s(char **argums, t_option *opts, size_t optsc)
 	{
 		opti = cl_find_sopt(*argum, opts, optsc);
 		if (opti == -1)
-			exit(ERROR_NO_OPTION);
+		{
+			ft_fdprintf(STDERR_FILENO, "%s: Option %c is not defined\n",
+														g_prog_name, *argum);
+			exit(EXIT_FAILURE);
+		}
 		if (opts[opti].param.has_param)
 			cl_parse_argum_warg(&opts[opti], *(argums + 1));
 		else
@@ -73,7 +79,11 @@ void	cl_engine_options_l(char **argums, t_option *opts, size_t optsc)
 	{
 		opti = cl_find_lopt(argum, opts, optsc);
 		if (opti == -1)
-			exit(ERROR_NO_OPTION);
+		{
+			ft_fdprintf(STDERR_FILENO, "%s: Option %s is not defined\n",
+															g_prog_name, argum);
+			exit(EXIT_FAILURE);
+		}
 		if (opts[opti].param.has_param)
 			cl_parse_argum_warg(&opts[opti], *(argums + 1));
 		else
